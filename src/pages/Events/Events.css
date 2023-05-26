@@ -1,0 +1,45 @@
+.events__container{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 3rem;
+    color: var(--accent-color);
+}
+
+.conference__container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.title__div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.title__h2{
+    font-weight: 700;
+    letter-spacing: -2.2px;
+}
+
+.sort__btn:hover{
+    cursor: pointer;
+}
+
+.add__container{
+    margin-top: 4.4rem;
+    display: flex;
+    flex-direction: column;
+}
+.add__btn{
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 1024px) {
+    .events__container{
+        grid-template-columns: 1fr;
+    }
+    h2{
+        font-size: 4px;
+    }
+}

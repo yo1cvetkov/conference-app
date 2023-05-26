@@ -1,0 +1,53 @@
+.conference__main__div{
+    display:  grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    border-radius: 20px;
+    box-shadow: 2px 4px 5px 1px rgba(0,0,0,0.3);
+}
+.left__div{
+    display: flex;
+    align-items: center;
+}
+
+.right__div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.icon__div{
+    display: flex;
+    gap: 1rem;
+}
+.no__img{
+    height: 150px;
+    width: 150px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+.name__h2{
+    font-weight: 500;
+    font-size: 1.5rem;
+    letter-spacing: -1px;
+}
+
+.tech__p{
+    font-weight: 500;
+}
+
+@media screen and (max-width: 1024px) {
+    .conference__main__div{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .name__h2{
+        font-size: 1.3rem;
+    }
+}
