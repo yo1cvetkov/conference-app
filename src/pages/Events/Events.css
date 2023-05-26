@@ -29,10 +29,27 @@
     margin-top: 4.4rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    
 }
-.add__btn{
+.btn.add__btn{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 1.5rem 2rem 1.5rem 2rem;
+}
+
+.quote__div{
+    border-radius: 20px;
+    box-shadow: 2px 4px 5px 1px rgba(0,0,0,0.3);
+    padding-bottom: 1rem;
+}
+
+.quote__h2{
+    padding: 2rem;
+    font-size: 1.6rem;
 }
 
 @media screen and (max-width: 1024px) {

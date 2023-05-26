@@ -13,7 +13,6 @@
     box-sizing: border-box;
 }
 
-
 :root{
     --bg-color: #fff;
     --accent-color: #000C4B;
@@ -58,20 +57,21 @@ h2{
     font-size: 2rem;
 }
 
-a {
+a{
     color: var(--bg-color);
 }
 
-img {
+img{
     object-fit: cover;
     width: 100%;
 }
 
 p{
     word-wrap: break-word;  
+    color: var(--accent-color);
 }
 
-.btn {
+.btn{
     width: fit-content;
     height: 42px;
     padding: 0.9rem 1rem;

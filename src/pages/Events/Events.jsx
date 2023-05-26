@@ -3,11 +3,13 @@ import "./Events.css"
 import {conferenceData} from '../../conferenceData.js'
 import Conference from '../../components/Conference.jsx'
 import {HiPlus} from "react-icons/hi"
+import Sketch from "../../assets/sketch.png"
 
 function Events() {
   return (
     <section className='container'>
       <div className='events__container'>
+        
       <div className='conference__container'>
         <div className='title__div'>
         <h2 className="title__h2">Upcoming Events</h2>
@@ -22,7 +24,10 @@ function Events() {
           <HiPlus />
           <p>Create new event</p>
         </div>
-        <div className='quote__div'></div>
+        <div className='quote__div'>
+          <h2 className='quote__h2'>Make sure that you're signed in before attending an event</h2>
+          <img src={Sketch} alt="enjoy" />
+        </div>
       </div>
       </div>
     </section>

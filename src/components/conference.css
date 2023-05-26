@@ -39,6 +39,27 @@
     font-weight: 500;
 }
 
+.attend__edit__div{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 1rem;
+}
+
+.edit__div{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 0.5 rem;
+}
+.edit__p{
+    color: gray;
+}
+
+.edit__div svg{
+    color: gray;
+}
+
 @media screen and (max-width: 1024px) {
     .conference__main__div{
         display: grid;
