@@ -2,19 +2,29 @@
     display: grid;
     grid-template-columns: repeat(3,1fr);
     margin-top: 3rem;
+    gap: 2rem;
+    margin-bottom: 3rem;
 }
 
 .single__container img{
     border-radius: 20px;
-    height: 80%;
 }
 
 .conf__info{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding-inline: 2rem 6rem;
-    max-height: 1rem;
-    column-gap: 2rem;
+    align-items: center;
+}
+
+
+.icon__name__div{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon__name__div svg{
+    color: grey;
 }
 
 .spec__div{
@@ -33,6 +43,10 @@
     gap: 2rem;
 }
 
+.title__single__h2{
+    margin-bottom: 2rem;
+}
+
 .single__user{
     display: flex;
     gap: 1rem;
@@ -40,4 +54,39 @@
     padding: 1rem;
     border-radius: 30px;
     box-shadow: 2px 4px 5px 1px rgba(0,0,0,0.3);
+}
+
+.p__bold{
+    font-weight: bold;
+}
+
+@media screen and (max-width: 1024px) {
+    .single__container{
+        grid-template-columns: 1fr 1fr;
+    }
+    .user__names__div{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .title__single__h2{
+        margin-top: 4rem;
+        margin-bottom: 2rem;
+    }
+    .conf__info{
+        gap: 2rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .single__container{
+        grid-template-columns: 1fr;
+    }
+
+    .user__names__div{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tec__div{
+        margin-top: 8rem;
+    }
 }

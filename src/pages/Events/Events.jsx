@@ -22,7 +22,7 @@ function Events() {
       <div className='add__container'>
         <div className='btn add__btn text-white'>
           <HiPlus />
-          <p>Create new event</p>
+          <p className='p__create'>Create new event</p>
         </div>
         <div className='quote__div'>
           <h2 className='quote__h2'>Make sure that you're signed in before attending an event</h2>

@@ -59,8 +59,17 @@ h5 {
   color: var(--accent-color);
 }
 
+<<<<<<< HEAD
 h2 {
   font-size: 2rem;
+=======
+h2{
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+h3{
+    font-size: 1.5rem;
+>>>>>>> aad0965481de06ed4ed36d737d594ff9a441baf7
 }
 
 a {
@@ -77,6 +86,7 @@ p {
   color: var(--accent-color);
 }
 
+<<<<<<< HEAD
 .btn {
   width: fit-content;
   height: 42px;
@@ -87,6 +97,22 @@ p {
   display: flex;
   align-items: center;
   color: var(--color-white);
+=======
+svg{
+    font-size: 25px;
+}
+
+.btn{
+    width: fit-content;
+    height: 42px;
+    padding: 0.9rem 1rem;
+    background: var(--accent-color);
+    border-radius: 1rem;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    color: var(--color-white);
+>>>>>>> aad0965481de06ed4ed36d737d594ff9a441baf7
 }
 
 .btn:hover {
