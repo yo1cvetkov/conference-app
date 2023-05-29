@@ -47,12 +47,12 @@ function Events() {
           })}
         </div>
         <div className="add__container">
-          <div
+          <button
             className="text-white bg-[--accent-color] fixed bottom-10 right-10 text-4xl rounded-full p-5 shadow-xl"
             onClick={() => setShowNewConf(true)}
           >
             <HiPlus />
-          </div>
+          </button>
           <div className="quote__div">
             <h2 className="quote__h2">
               Make sure that you're signed in before attending an event
@@ -82,7 +82,7 @@ export function AddConfModal({ open, setOpen }) {
             Add new event
           </h4>
           <button onClick={() => setOpen(false)}>
-            <MdClose className="text-3xl" />
+            <MdClose className="text-3xl text-[--accent-color]" />
           </button>
         </div>
 
