@@ -11,6 +11,7 @@ import {FcCancel} from "react-icons/fc"
 
 function Conference(props) {
     const {id, name, date, time, isShow} = props;
+    console.log(isShow);
  
   return (
     <div className='conference__main__div'>

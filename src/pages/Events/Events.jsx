@@ -41,6 +41,7 @@ function Events() {
                 name={obj.name}
                 date={obj.date}
                 time={obj.time}
+                isShow={true}
               />
             );
           })}
