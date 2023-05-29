@@ -1,5 +1,5 @@
-import React from 'react'
-import Navbar from './components/Navbar'
+import React, {useState} from 'react'
+import Navbar, { Modal } from './components/Navbar'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Events from './pages/Events/Events.jsx'
 import MyEvents from './pages/MyEvents/MyEvents.jsx'
@@ -8,15 +8,17 @@ import SinglePage from './pages/SinglePage/SinglePage'
 
 
 function App() {
+  
   return (
     <div>
       <BrowserRouter>
-      <Navbar />
+      <Navbar/>
       <Routes> 
             <Route index element={<Events />} />
             <Route path="/my_events" element={<MyEvents />} />
             <Route path="/users" element={<Users />} />
             <Route path='/conference/:id' element={<SinglePage />} />
+            <Route path='/sign-in' element={<Modal />}/>
       </Routes>
       </BrowserRouter>
     </div>

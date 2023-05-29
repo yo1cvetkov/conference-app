@@ -20,7 +20,7 @@ function Events() {
         })}
       </div>
       <div className='add__container'>
-        <div className='btn add__btn'>
+        <div className='btn add__btn text-white'>
           <HiPlus />
           <p>Create new event</p>
         </div>

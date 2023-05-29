@@ -1,113 +1,118 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
 
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    list-style: none;
-    text-decoration: none;
-    box-sizing: border-box;
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  list-style: none;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
-:root{
-    --bg-color: #fff;
-    --accent-color: #000C4B;
-    --accent-color-dark: #000d36;
-    --accent-color-light: #002288;
-    --color-white: #fff;
-    --container-width-lg: 80%;
-    --container-width-md: 90%;
-    --transition: all 500ms ease;
+:root {
+  --color-gray-light: #bababa;
+  --color-gray-light-transparent: #bababa68;
+  --accent-color: #000c4b;
+  --accent-color-dark: #000d36;
+  --accent-color-light: #002288;
+  --color-white: #fff;
+  --container-width-lg: 80%;
+  --container-width-md: 90%;
+  --transition: all 500ms ease;
 }
 
 ::-webkit-scrollbar {
-    display: none;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none; 
+  display: none;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
 }
 
-body{
-    font-family: 'Open Sans', sans-serif;
-    color: #000;
-    line-height: 1.7;
-    overflow-x: hidden;
-    background: var(--bg-color);
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #000;
+  line-height: 1.7;
+  overflow-x: hidden;
+  background: var(--bg-color);
 }
 
 .container {
-    width: var(--container-width-lg);
-    max-width: 1920px;
-    margin-inline: auto;
+  width: var(--container-width-lg);
+  max-width: 1920px;
+  margin-inline: auto;
 }
 
-section{
-    margin-top: 8rem;
+section {
+  margin-top: 8rem;
 }
 
-h1,h2,h3,h4,h5{
-    line-height: 1.2;
-    color: var(--accent-color);
+h1,
+h2,
+h3,
+h4,
+h5 {
+  line-height: 1.2;
+  color: var(--accent-color);
 }
 
-h2{
-    font-size: 2rem;
+h2 {
+  font-size: 2rem;
 }
 
-a{
-    color: var(--bg-color);
+a {
+  color: var(--bg-color);
 }
 
-img{
-    object-fit: cover;
-    width: 100%;
+img {
+  object-fit: cover;
+  width: 100%;
 }
 
-p{
-    word-wrap: break-word;  
-    color: var(--accent-color);
+p {
+  word-wrap: break-word;
+  color: var(--accent-color);
 }
 
-.btn{
-    width: fit-content;
-    height: 42px;
-    padding: 0.9rem 1rem;
-    background: var(--accent-color);
-    border-radius: 1rem;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    color: var(--color-white);
+.btn {
+  width: fit-content;
+  height: 42px;
+  padding: 0.9rem 1.8rem;
+  background: var(--accent-color);
+  border-radius: 1rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  color: var(--color-white);
 }
 
-
-.btn:hover{
-    cursor: pointer;
-    background-color: var(--accent-color-light);
+.btn:hover {
+  cursor: pointer;
+  background-color: var(--accent-color-light);
+  color: var(--color-white);
 }
-
 
 /*=========RESPONSIVE FOR TABLETS=============*/
 @media screen and (max-width: 1024px) {
-    .container{
-        width: var(--container-width-md);
-    }
-    h1{
-        font-size: 2rem;
-    }
-    h2{
-        font-size: 2.6rem;
-    }
+  .container {
+    width: var(--container-width-md);
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 2.6rem;
+  }
 }
-
 
 /*=========RESPONSIVE FOR PHONES=============*/
 @media screen and (max-width: 600px) {
-    h1, h2{
-        font-size: 1.8rem;
-        line-height: 1.3;
-    }
+  h1,
+  h2 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
 }

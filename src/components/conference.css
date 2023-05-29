@@ -1,74 +1,74 @@
-.conference__main__div{
-    display:  grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    border-radius: 20px;
-    box-shadow: 2px 4px 5px 1px rgba(0,0,0,0.3);
+.conference__main__div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  border-radius: 20px;
+  box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3);
 }
-.left__div{
-    display: flex;
-    align-items: center;
-}
-
-.right__div{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
+.left__div {
+  display: flex;
+  align-items: center;
 }
 
-.icon__div{
-    display: flex;
-    gap: 1rem;
-}
-.no__img{
-    height: 150px;
-    width: 150px;
-    border-radius: 20px;
-    box-sizing: border-box;
-    padding: 1rem;
+.right__div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
 }
 
-.name__h2{
-    font-weight: 500;
-    font-size: 1.5rem;
-    letter-spacing: -1px;
+.icon__div {
+  display: flex;
+  gap: 1rem;
+}
+.no__img {
+  height: 150px;
+  width: 150px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 1rem;
 }
 
-.tech__p{
-    font-weight: 500;
+.name__h2 {
+  font-weight: 500;
+  font-size: 1.5rem;
+  letter-spacing: -1px;
 }
 
-.attend__edit__div{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    gap: 1rem;
+.tech__p {
+  font-weight: 500;
 }
 
-.edit__div{
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    gap: 0.5 rem;
-}
-.edit__p{
-    color: gray;
+.attend__edit__div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
 }
 
-.edit__div svg{
-    color: gray;
+.edit__div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5 rem;
+}
+.edit__p {
+  color: gray;
+}
+
+.edit__div svg {
+  color: gray;
 }
 
 @media screen and (max-width: 1024px) {
-    .conference__main__div{
-        display: grid;
-        grid-template-columns: 1fr;
-    }
+  .conference__main__div {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 }
 
 @media screen and (max-width: 600px) {
-    .name__h2{
-        font-size: 1.3rem;
-    }
+  .name__h2 {
+    font-size: 1.3rem;
+  }
 }
