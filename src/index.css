@@ -55,6 +55,10 @@ h1,h2,h3,h4,h5{
 
 h2{
     font-size: 2rem;
+    margin-bottom: 2rem;
+}
+h3{
+    font-size: 1.5rem;
 }
 
 a{
@@ -69,6 +73,10 @@ img{
 p{
     word-wrap: break-word;  
     color: var(--accent-color);
+}
+
+svg{
+    font-size: 25px;
 }
 
 .btn{

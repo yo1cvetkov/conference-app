@@ -29,7 +29,7 @@ export default function Navbar(){
                 </ul>
                 <div className="end__point">
                     <Link to='/sign_in'>
-                        <p>Sign in</p>
+                        <p className="sign__in__p">Sign in</p>
                     </Link>
                 <button onClick={() => setIsNavShowing(oldVal => !oldVal)} className="nav__toggle-btn">
                     <GoThreeBars />

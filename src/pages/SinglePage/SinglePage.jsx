@@ -5,7 +5,11 @@ import { conferenceData } from '../../conferenceData';
 import { userData } from '../../userData';
 import noImg from "../../assets/noImg.jpg"
 import {SiJavascript} from "react-icons/si"
-import {AiOutlineUser} from "react-icons/ai"
+import {FaUser} from "react-icons/fa"
+import {BsCalendar3} from "react-icons/bs"
+import {BsFillClockFill} from "react-icons/bs"
+import {BiMessage} from "react-icons/bi"
+
 
 function SinglePage() {
     const ParamObj = useParams();
@@ -15,21 +19,42 @@ function SinglePage() {
     
   return (
     <section className='container'>
-        <h2 className="title__h2">{name}</h2>
+        <h2 className="title__single__h2">{name}</h2>
       <div className='single__container'>
         <img src={noImg} alt="No-image" />
         <div className='conf__info'>
-                    <p>Start Date:</p>
-                    <p>{date}</p>
-                    <p>End Date:</p>
-                    <p>{endDate}</p>
-                    <p>Time:</p>
-                    <p>{time}</p>
-                    <p>Creator:</p>
-                    <p>{creator}</p>
-                    <p>Description:</p>
-                    <p>{desc}</p>
+
+          <div className='icon__name__div'>
+            <BsCalendar3 />
+            <p className='p__bold'>Start Date:</p>
+          </div>
+            <p>{date}</p>
+
+            <div className='icon__name__div'> 
+            <BsCalendar3 />
+            <p className='p__bold'>End Date:</p>
+          </div>
+            <p>{endDate}</p>
+
+            <div className='icon__name__div'>
+            <BsFillClockFill />
+            <p className='p__bold'>Time:</p>
+          </div>
+            <p>{time}</p>
+
+            <div className='icon__name__div'>
+            <FaUser />
+            <p className='p__bold'>Creator:</p>
+          </div>
+            <p>{creator}</p>
+
+            <div className='icon__name__div'>
+            <BiMessage />
+            <p className='p__bold'>Description:</p>
+          </div>
+            <p>{desc}</p>
         </div>
+
         <div className='tec__div'>
             <p className='tech__p'>Technologies :</p>
             <div className='icon__div'>
@@ -39,13 +64,13 @@ function SinglePage() {
         </div>
       </div>
       <div className='users__div'>
-        <h2 className='title__h2'>Users:</h2>
+        <h2 className='title__single__h2'>Users:</h2>
       </div>
       <div className='user__names__div'>
         {userData.map(obj=>{
             return (
             <div className='single__user'>
-                <AiOutlineUser />
+                <FaUser />
                 <p>{obj.name}</p>
             </div>
             )

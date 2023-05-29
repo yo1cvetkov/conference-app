@@ -1,0 +1,29 @@
+.users__container{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 3rem;
+    color: var(--accent-color);
+}
+
+.user__info__container{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 3rem;
+}
+
+@media screen and (max-width: 1024px) {
+    .users__container{
+        grid-template-columns: 1fr;
+    }
+    .user__info__container{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .user__info__container{
+        grid-template-columns: 1fr;
+    }
+}
+
+

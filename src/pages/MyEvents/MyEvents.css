@@ -1,0 +1,6 @@
+.my__events__container{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 3rem;
+    color: var(--accent-color);
+}
