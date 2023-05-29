@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import {BiEdit} from 'react-icons/bi'
 import {BsCalendar3, BsClockFill} from "react-icons/bs"
 import {BsFillClockFill} from "react-icons/bs"
+import {FcCancel} from "react-icons/fc"
 
 
 function Conference(props) {
@@ -37,11 +38,11 @@ function Conference(props) {
                 <SiJavascript />
             </div>
         </div>
-        <div className='attend__edit__div'>
+        <div className={isShow ? 'attend__edit__div' : 'cancel__div'}>
         <Link>
             <div className='edit__div'>
-            <BiEdit />
-            <p className='edit__p'>Edit</p>
+            {isShow ? <BiEdit /> : <FcCancel />}
+            <p className='edit__p'>{isShow ? "Edit" : "Cancel Conference"}</p>
             </div>
         </Link>
 

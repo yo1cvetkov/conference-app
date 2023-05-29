@@ -42,6 +42,11 @@
   margin-bottom: 0;
 }
 
+.tech__div{
+  display: grid;
+  gap: 1rem;
+}
+
 .tech__p {
   font-weight: bold;
   color: var(--color-gray-dark);
@@ -54,11 +59,16 @@
   gap: 1rem;
 }
 
+.cancel__div{
+  display: grid;
+  place-items: center;
+}
+
 .edit__div {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.5 rem;
+  gap: 0.2rem;
 }
 .edit__p {
   color: var(--color-gray-dark);
