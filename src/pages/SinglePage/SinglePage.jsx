@@ -64,12 +64,12 @@ function SinglePage() {
             </div>
             </div>
             <Link to='/id'>
-            <div className='btn single__btn'>Attend+</div>
+            <div className='btn single__btn'>Attend +</div>
             </Link>
         </div>
       </div>
       <div className='users__div'>
-        <h2 className='title__single__h2'>Users:</h2>
+        <h2 className='title__single__h2'>Attenders:</h2>
       </div>
       <div className='user__names__div'>
         {userData.map(obj=>{

@@ -23,7 +23,7 @@
 }
 
 .icon__name__div svg{
-    color: grey;
+    color: var(--color-gray-dark)
 }
 
 .spec__div{
@@ -59,6 +59,10 @@
     padding: 1rem;
     border-radius: 30px;
     box-shadow: 2px 4px 5px 1px rgba(0,0,0,0.3);
+}
+
+.single__user svg{
+    color: var(--accent-color);
 }
 
 .btn.single__btn{

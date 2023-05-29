@@ -49,14 +49,13 @@ nav {
 }
 
 .nav__links a:hover{
-    filter: drop-shadow(0 0 0.8rem var(--accent-color));
     color: var(--color-white);
     
 }
 
 .active-nav{
-    color: var(--color-white);
     position: relative;
+    color: var(--color-white);
 }
 
 .active-nav::after{
@@ -68,6 +67,7 @@ nav {
     right: 0;
     bottom: -0.2rem;
     background: var(--color-white);
+    color: var(--color-white);
     position: absolute;
 }
 

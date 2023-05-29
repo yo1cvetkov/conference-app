@@ -47,7 +47,7 @@ function Conference(props) {
         </Link>
 
         <Link to='/id' className={isShow ? "" : "hide__link"}>
-            <div className='btn'>Attend+</div>
+            <div className='btn'>Attend +</div>
         </Link>
         </div>
         </div>
