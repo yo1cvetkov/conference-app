@@ -6,6 +6,8 @@
     border-radius: 20px;
     box-shadow: 2px 4px 5px 1px rgba(0,0,0,0.3);
     gap: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 .user__div h3{
