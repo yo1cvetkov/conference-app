@@ -1,68 +1,67 @@
-.events__container{
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 3rem;
-    color: var(--accent-color);
+.events__container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 3rem;
+  color: var(--accent-color);
 }
 
-.conference__container{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+.conference__container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.title__div{
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
+.title__div {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
-.title__h2{
-    font-weight: 700;
-    letter-spacing: -2.2px;
-    margin-bottom: 0;
+.title__h2 {
+  font-weight: 700;
+  letter-spacing: -2.2px;
+  margin-bottom: 0;
 }
 
-.sort__btn:hover{
-    cursor: pointer;
+.sort__btn:hover {
+  cursor: pointer;
 }
 
-.add__container{
-    margin-top: 4.4rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    
+.add__container {
+  margin-top: 4.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
-.btn.add__btn{
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    padding: 1.5rem 2rem 1.5rem 2rem;
-}
-
-.quote__div{
-    border-radius: 20px;
-    box-shadow: 2px 4px 5px 1px rgba(0,0,0,0.3);
-    padding-bottom: 1rem;
+.btn.add__btn {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1.5rem 2rem 1.5rem 2rem;
 }
 
-.quote__h2{
-    padding: 2rem;
-    font-size: 1.6rem;
+.quote__div {
+  border-radius: 20px;
+  box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3);
+  padding-bottom: 1rem;
 }
 
-.p__create{
-    color: var(--color-white);
+.quote__h2 {
+  padding: 2rem;
+  font-size: 1.6rem;
+}
+
+.p__create {
+  color: var(--color-white);
 }
 
 @media screen and (max-width: 1024px) {
-    .events__container{
-        grid-template-columns: 1fr;
-    }
-    h2{
-        font-size: 4px;
-    }
+  .events__container {
+    grid-template-columns: 1fr;
+  }
+  h2 {
+    font-size: 4px;
+  }
 }
