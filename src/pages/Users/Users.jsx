@@ -7,7 +7,7 @@ import "./Users.css"
 function Users() {
   return (
     <section className='container'>
-      <h2 className="title__h2">Users</h2>
+      <h2>Users</h2>
       <div className='users__container'>
       <div className='user__info__container'>
         {userData.map((obj,i)=>{

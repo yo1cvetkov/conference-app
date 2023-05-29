@@ -7,11 +7,11 @@ import "./MyEvents.css"
 function MyEvents() {
   return (
     <section className='container'>
-      <h2 className="title__h2">My Events</h2>
+      <h2>My Events</h2>
       <div className='my__events__container'>
-      <div className='my__conference__container'>
+      <div className='conference__container'>
         {conferenceData.map((obj,i)=>{
-          return <Conference key={i} id={obj.id} name={obj.name} date={obj.date} time={obj.time}/>
+          return <Conference key={i} id={obj.id} name={obj.name} date={obj.date} time={obj.time} isShow={false}/>
         })}
       </div>
       <div className='my__add__container'>

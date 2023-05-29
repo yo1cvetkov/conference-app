@@ -15,6 +15,13 @@ nav {
     display: none;
 }
 
+.sign__in-btn{
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: 600;
+}
+
 .nav__container{
     height: 100%;
     display: flex;
@@ -23,8 +30,9 @@ nav {
     position: relative;
 }
 
-.logo__div{
+.logo__link{
     display: flex;
+    align-items: end;
 }
 .end__point{
     display: flex;
@@ -37,6 +45,7 @@ nav {
 
 .nav__links a{
     transition: var(--transition);
+    color: var(--color-white);
 }
 
 .nav__links a:hover{
@@ -62,8 +71,8 @@ nav {
     position: absolute;
 }
 
-.sign__in__p{
-    color: white;
+.nav__toggle-btn{
+    color: var(--color-white);
 }
 
 

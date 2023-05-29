@@ -4,3 +4,16 @@
     gap: 3rem;
     color: var(--accent-color);
 }
+
+.hide__link{
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .my__events__container{
+        grid-template-columns: 1fr;
+    }
+    h2{
+        font-size: 4px;
+    }
+}

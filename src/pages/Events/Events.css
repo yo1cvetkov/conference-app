@@ -14,11 +14,13 @@
 .title__div{
     display: flex;
     justify-content: space-between;
+    align-items: end;
 }
 
 .title__h2{
     font-weight: 700;
     letter-spacing: -2.2px;
+    margin-bottom: 0;
 }
 
 .sort__btn:hover{

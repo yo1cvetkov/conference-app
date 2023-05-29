@@ -6,7 +6,7 @@ function User(props) {
   return (
     <div className='user__div'>
       <h3>{name}</h3>
-      <p>{desc}</p>
+      <p className='p__user__desc'>{desc}</p>
       <p>{dep}</p>
       <p>{del}</p>
     </div>

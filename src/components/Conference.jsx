@@ -4,9 +4,12 @@ import noImg from "../assets/noImg.jpg"
 import {SiJavascript} from "react-icons/si"
 import { Link } from 'react-router-dom'
 import {BiEdit} from 'react-icons/bi'
+import {BsCalendar3, BsClockFill} from "react-icons/bs"
+import {BsFillClockFill} from "react-icons/bs"
+
 
 function Conference(props) {
-    const {id, name, date, time} = props;
+    const {id, name, date, time, isShow} = props;
  
   return (
     <div className='conference__main__div'>
@@ -16,8 +19,14 @@ function Conference(props) {
             <Link to={`/conference/${id}`}>
                 <h2 className='name__h2'>{name}</h2>
             </Link>
-            <p>{date}</p>
-            <p>{time}</p>
+            <div className='icon__name__div'>
+            <BsCalendar3 />
+            <p className='p__bold'>{date}</p>
+          </div>
+          <div className='icon__name__div'>
+            <BsFillClockFill/>
+            <p className='p__bold'>{time}</p>
+          </div>
         </div>
         </div>
         <div className='right__div'>
@@ -36,7 +45,7 @@ function Conference(props) {
             </div>
         </Link>
 
-        <Link to='/id'>
+        <Link to='/id' className={isShow ? "" : "hide__link"}>
             <div className='btn'>Attend+</div>
         </Link>
         </div>

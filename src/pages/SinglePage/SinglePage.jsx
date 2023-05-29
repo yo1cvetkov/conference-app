@@ -9,7 +9,7 @@ import {FaUser} from "react-icons/fa"
 import {BsCalendar3} from "react-icons/bs"
 import {BsFillClockFill} from "react-icons/bs"
 import {BiMessage} from "react-icons/bi"
-
+import { Link } from 'react-router-dom';
 
 function SinglePage() {
     const ParamObj = useParams();
@@ -56,11 +56,16 @@ function SinglePage() {
         </div>
 
         <div className='tec__div'>
+          <div className='tec__icon__div'>
             <p className='tech__p'>Technologies :</p>
             <div className='icon__div'>
                 <SiJavascript />
                 <SiJavascript />
             </div>
+            </div>
+            <Link to='/id'>
+            <div className='btn single__btn'>Attend+</div>
+            </Link>
         </div>
       </div>
       <div className='users__div'>

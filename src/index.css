@@ -17,6 +17,7 @@
 :root {
   --color-gray-light: #bababa;
   --color-gray-light-transparent: #bababa68;
+  --color-gray-dark: #414141;
   --accent-color: #000c4b;
   --accent-color-dark: #000d36;
   --accent-color-light: #002288;
@@ -61,6 +62,8 @@ h5 {
 
 h2 {
   font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -2.2px;
   margin-bottom: 2rem;
 }
 h3 {
@@ -69,6 +72,7 @@ h3 {
 
 a {
   color: var(--bg-color);
+  font-weight: 600;
 }
 
 img {
@@ -81,6 +85,13 @@ p {
   color: var(--accent-color);
 }
 
+svg{
+  font-size: 25px;
+}
+
+button{
+  color: var(--color-white);
+}
 .btn {
   width: fit-content;
   height: 42px;
@@ -91,6 +102,7 @@ p {
   display: flex;
   align-items: center;
   color: var(--color-white);
+  font-weight: 600;
 }
 
 .btn {

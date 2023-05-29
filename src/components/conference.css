@@ -29,14 +29,22 @@
   padding: 1rem;
 }
 
+.info__div{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .name__h2 {
   font-weight: 500;
   font-size: 1.5rem;
   letter-spacing: -1px;
+  margin-bottom: 0;
 }
 
 .tech__p {
-  font-weight: 500;
+  font-weight: bold;
+  color: var(--color-gray-dark);
 }
 
 .attend__edit__div {
@@ -53,11 +61,11 @@
   gap: 0.5 rem;
 }
 .edit__p {
-  color: gray;
+  color: var(--color-gray-dark);
 }
 
 .edit__div svg {
-  color: gray;
+  color: var(--color-gray-dark);
 }
 
 @media screen and (max-width: 1024px) {

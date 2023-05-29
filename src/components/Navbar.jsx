@@ -4,6 +4,7 @@ import Logo from "../assets/Logo.png";
 import { Link, NavLink } from "react-router-dom";
 import { links } from "../data";
 import { GoThreeBars } from "react-icons/go";
+import {HiUserCircle} from "react-icons/hi"
 import { createPortal } from "react-dom";
 import "./SignInModal.css";
 
@@ -17,8 +18,8 @@ export default function Navbar() {
       <nav>
         <div className="container nav__container">
           <div className="logo__div">
+          <Link to="/" className="logo__link">
             <p className="text-2xl text-white">Conference</p>
-            <Link to="/" className="link">
               <img src={Logo} alt="Nav Logo" className="h-10" />
             </Link>
           </div>
@@ -40,7 +41,9 @@ export default function Navbar() {
             })}
           </ul>
           <div className="end__point">
-            <button onClick={() => setOpenModal(true)}>Sign in</button>
+            <button className="sign__in-btn" onClick={() => setOpenModal(true)}>
+              <HiUserCircle />
+              Sign in</button>
 
             <button
               onClick={() => setIsNavShowing((oldVal) => !oldVal)}

@@ -16,7 +16,7 @@ function Events() {
         <p className='sort__btn'>&#8595; Most recent</p>
         </div>
         {conferenceData.map((obj,i)=>{
-          return <Conference key={i} id={obj.id} name={obj.name} date={obj.date} time={obj.time}/>
+          return <Conference key={i} id={obj.id} name={obj.name} date={obj.date} time={obj.time} isShow={true}/>
         })}
       </div>
       <div className='add__container'>
