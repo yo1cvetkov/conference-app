@@ -3,6 +3,7 @@
   grid-template-columns: 3fr 1fr;
   gap: 3rem;
   color: var(--accent-color);
+  position: relative;
 }
 
 .conference__container {
