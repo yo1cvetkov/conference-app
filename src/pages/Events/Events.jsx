@@ -3,7 +3,7 @@ import "./Events.css";
 import { conferenceData } from "../../conferenceData.js";
 import Conference from "../../components/Conference.jsx";
 import { HiPlus } from "react-icons/hi";
-import { MdClose } from "react-icons/md";
+import { MdArrowDownward, MdClose } from "react-icons/md";
 import Sketch from "../../assets/sketch.png";
 
 const dummyTechnologies = [
@@ -31,7 +31,10 @@ function Events() {
         <div className="conference__container">
           <div className="title__div">
             <h2 className="title__h2">Upcoming Events</h2>
-            <p className="sort__btn">&#8595; Most recent</p>
+            <button className="sort__btn flex items-center gap-1 text-[--accent-color]">
+              <MdArrowDownward className="text-lg" />
+              <span className="text-lg font-medium">Most recent</span>
+            </button>
           </div>
           {conferenceData.map((obj, i) => {
             return (
@@ -55,7 +58,7 @@ function Events() {
           </button>
           <div className="quote__div">
             <h2 className="quote__h2">
-              Make sure that you're signed in before attending an event
+              Make sure that you're signed in before attending an event!
             </h2>
             <img src={Sketch} alt="enjoy" />
           </div>

@@ -24,7 +24,7 @@ function Users() {
         openModal={openUserDetails}
         setOpenModal={setOpenUserDetails}
       />
-      <h2>Users</h2>
+      <h2 className="users__title">Users</h2>
       <div className="users__container">
         <div className="user__info__container">
           {userData.map((obj, i) => {

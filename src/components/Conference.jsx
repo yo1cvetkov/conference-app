@@ -1,18 +1,15 @@
 import React from "react";
 import "./conference.css";
 import noImg from "../assets/noImg.jpg";
-import { SiJavascript } from "react-icons/si";
 import { Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
-import { BsCalendar3, BsClockFill } from "react-icons/bs";
+import { BsCalendar3 } from "react-icons/bs";
 import { BsFillClockFill } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
 
-function Conference(props) {
-  const { id, name, date, time, isShow } = props;
-
+function Conference({ id, name, date, time, isShow }) {
   return (
-    <div className="conference__main__div">
+    <div className="conference__main__div shadow-md">
       <div className="left__div">
         <img className="no__img" src={noImg} alt="no_image" />
         <div className="info__div">
@@ -33,8 +30,20 @@ function Conference(props) {
         <div className="tech__div">
           <p className="tech__p">Technologies :</p>
           <div className="icon__div">
-            <SiJavascript />
-            <SiJavascript />
+            <img
+              className="dev__icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+            />
+
+            <img
+              className="dev__icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+            />
+
+            <img
+              className="dev__icon"
+              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain.svg"
+            />
           </div>
         </div>
         <div className={isShow ? "attend__edit__div" : "cancel__div"}>

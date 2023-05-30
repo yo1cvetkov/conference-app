@@ -20,12 +20,14 @@
 
 .title__h2 {
   font-weight: 700;
-  letter-spacing: -2.2px;
+  /* letter-spacing: -2.2px; */
+  letter-spacing: 0.1px;
   margin-bottom: 0;
 }
 
-.sort__btn:hover {
-  cursor: pointer;
+.sort__btn:hover > svg {
+  transform: translateY(5px);
+  transition: all 200ms ease-in-out;
 }
 
 .add__container {
@@ -45,13 +47,16 @@
 
 .quote__div {
   border-radius: 20px;
-  box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3); */
   padding-bottom: 1rem;
 }
 
 .quote__h2 {
-  padding: 2rem;
-  font-size: 1.6rem;
+  /* padding: 2rem; */
+  padding-inline: 2.2rem;
+  font-weight: 600;
+  font-size: 1.4rem;
+  letter-spacing: 0.3px;
 }
 
 .p__create {

@@ -3,11 +3,16 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   border-radius: 20px;
-  box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3); */
 }
 .left__div {
   display: flex;
   align-items: center;
+}
+
+.dev__icon {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .right__div {
@@ -29,7 +34,7 @@
   padding: 1rem;
 }
 
-.info__div{
+.info__div {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -42,7 +47,7 @@
   margin-bottom: 0;
 }
 
-.tech__div{
+.tech__div {
   display: grid;
   gap: 1rem;
 }
@@ -59,7 +64,7 @@
   gap: 1rem;
 }
 
-.cancel__div{
+.cancel__div {
   display: grid;
   place-items: center;
 }
