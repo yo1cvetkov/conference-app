@@ -16,10 +16,13 @@
 
 :root {
   --color-gray-light: #bababa;
+  --color-gray-medium: #767676;
   --color-gray-light-transparent: #bababa68;
+  --color-black-transparent: #00000080;
   --color-gray-dark: #414141;
   --accent-color: #000c4b;
   --accent-color-dark: #000d36;
+
   --accent-color-light: #002288;
   --color-white: #fff;
   --container-width-lg: 80%;
@@ -86,11 +89,11 @@ p {
   color: var(--accent-color);
 }
 
-svg{
+svg {
   font-size: 25px;
 }
 
-button{
+button {
   color: var(--color-white);
 }
 .btn {
