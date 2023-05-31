@@ -1,8 +1,7 @@
 import React from "react";
 import "./user.css";
 
-function User(props) {
-  const { id, name, desc, dep, del } = props;
+function User({ id, name, desc, dep, del }) {
   return (
     <div
       className="user__div cursor-pointer"

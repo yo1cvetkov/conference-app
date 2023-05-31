@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { conferenceData } from "../../conferenceData";
 import { userData } from "../../userData";
 import noImg from "../../assets/noImg.jpg";
-import { SiJavascript } from "react-icons/si";
 import { FaUser } from "react-icons/fa";
 import { BsCalendar3 } from "react-icons/bs";
 import { BsFillClockFill } from "react-icons/bs";
