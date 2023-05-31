@@ -5,6 +5,7 @@ import Events from './pages/Events/Events.jsx'
 import MyEvents from './pages/MyEvents/MyEvents.jsx'
 import Users from './pages/Users/Users.jsx'
 import SinglePage from './pages/SinglePage/SinglePage'
+import Register from './pages/Register/Register'
 
 
 function App() {
@@ -18,7 +19,8 @@ function App() {
             <Route path="/my_events" element={<MyEvents />} />
             <Route path="/users" element={<Users />} />
             <Route path='/conference/:id' element={<SinglePage />} />
-            <Route path='/sign-in' element={<Modal />}/>
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Modal />}/>
       </Routes>
       </BrowserRouter>
     </div>

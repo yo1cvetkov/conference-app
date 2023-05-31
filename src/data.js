@@ -11,5 +11,9 @@ export const links = [
     {
         name: "USERS",
         path: "/users"
+    },
+    {
+        name: "REGISTER",
+        path: "/register"
     }
 ]
