@@ -21,12 +21,30 @@ export function AuthProvider({ children }) {
             reject();
           } else {
             resolve(session);
-            setUser(user);
+            setUser(user.signInUserSession.idToken.payload.name);
           }
         });
       } else {
         reject();
       }
+    });
+  }
+
+  async function confirmAccount(email, code) {
+    return await new Promise((resolve, reject) => {
+      const user = new CognitoUser({
+        Username: email,
+        Pool: UserPool,
+      });
+
+      user.confirmRegistration(code, true, (err, data) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
     });
   }
 
@@ -43,7 +61,6 @@ export function AuthProvider({ children }) {
 
       user.authenticateUser(authenticationDetails, {
         onSuccess: (data) => {
-          console.log("Successfull", data);
           resolve(data);
         },
         onFailure: (err) => {
@@ -76,6 +93,7 @@ export function AuthProvider({ children }) {
     user,
     setUser,
     logout,
+    confirmAccount,
   };
 
   return <AuthCtx.Provider value={providerValue}>{children}</AuthCtx.Provider>;

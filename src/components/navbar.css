@@ -50,6 +50,7 @@ nav {
 }
 .end__point {
   display: flex;
+  align-items: center;
 }
 .nav__links {
   display: flex;
