@@ -5,6 +5,7 @@ import Conference from "../../components/Conference.jsx";
 import { HiPlus } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
 import Sketch from "../../assets/sketch.png";
+import axios from "axios";
 
 const dummyTechnologies = [
   {
@@ -68,6 +69,61 @@ function Events() {
 export default Events;
 
 export function AddConfModal({ open, setOpen }) {
+  const crudURL = 'https://a7wght99zk.execute-api.eu-central-1.amazonaws.com/test/conference';
+  
+  const [name, setName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [url, setUrl] = useState('');
+  const [description, setDescription] = useState('');
+  const [technologies, setTechnologies] = useState([]);
+  const [message, setMessage] = useState(null);
+  console.log(technologies);
+
+  const handleCheck = (event) => {
+    setTechnologies(oldVal => event.target.checked ? [...oldVal, event.target.name] : oldVal.map(it=>it===event.target.name?'':it).filter(it=>it!==''));
+  };
+
+  const createHandler = (event) => {
+    event.preventDefault();
+        if(name.trim('') === "" || startDate.trim('') === "" || endDate.trim('') === "" || startTime.trim('') === "" || endTime.trim('') === "" || url.trim('') === ""){
+            setMessage("All fields are required");
+            return;
+        }
+
+        const requestConfig = {
+          headers: {
+              'x-api-key': 'qCN51M0Zbs5FRo0r8IdHt90raGmJYSlP3FUsX1jo'
+          }
+      }
+
+        const requestBody = {
+            name: name,
+            startDate: startDate,
+            endDate: endDate,
+            startTime: startTime,
+            endTime: endTime,
+            url: url,
+            description: description,
+            technologies: technologies
+        }
+
+        axios.post(crudURL, requestBody, requestConfig).then(response => {
+          console.log(response);
+            setMessage("Konferencija kreirana!");
+        }).catch(error => {
+            if(error.response.status === 401) {
+                setMessage(error.response.data.message);
+            }else{
+                setMessage('sorry backend failed')
+            }
+        })
+
+    }
+
+
   return (
     <>
       <div
@@ -86,11 +142,13 @@ export function AddConfModal({ open, setOpen }) {
           </button>
         </div>
 
-        <form>
+        <form onSubmit={createHandler}>
           <div className="flex flex-col text-[--accent-color] mt-8">
-            <label className="text-md font-medium">Title</label>
+            <label className="text-md font-medium">Name</label>
             <input
               type="text"
+              value={name}
+              onChange={event => setName(event.target.value)}
               placeholder="Add event title"
               className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
             />
@@ -100,6 +158,8 @@ export function AddConfModal({ open, setOpen }) {
               <label className="block text-md font-medium">Start date</label>
               <input
                 type="date"
+                value={startDate}
+                onChange={event => setStartDate(event.target.value)}
                 placeholder="Enter conference title"
                 className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
               />
@@ -108,6 +168,8 @@ export function AddConfModal({ open, setOpen }) {
               <label className="block text-md font-medium">End date</label>
               <input
                 type="date"
+                value={endDate}
+                onChange={event => setEndDate(event.target.value)}
                 placeholder="Enter conference title"
                 className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
               />
@@ -117,6 +179,8 @@ export function AddConfModal({ open, setOpen }) {
               <label className="block text-md font-medium">Start time</label>
               <input
                 type="time"
+                value={startTime}
+                onChange={event => setStartTime(event.target.value)}
                 placeholder="Enter conference title"
                 className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
               />
@@ -125,6 +189,8 @@ export function AddConfModal({ open, setOpen }) {
               <label className="block text-md font-medium">End time</label>
               <input
                 type="time"
+                value={endTime}
+                onChange={event => setEndTime(event.target.value)}
                 placeholder="Enter conference title"
                 className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
               />
@@ -135,6 +201,8 @@ export function AddConfModal({ open, setOpen }) {
             <label className="text-md font-medium">Url</label>
             <input
               type="text"
+              value={url}
+              onChange={event => setUrl(event.target.value)}
               placeholder="Add event url"
               className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
             />
@@ -142,6 +210,8 @@ export function AddConfModal({ open, setOpen }) {
           <div className="flex flex-col text-[--accent-color] mt-8">
             <label className="text-md font-medium">Description</label>
             <textarea
+              value={description}
+              onChange={event => setDescription(event.target.value)}
               placeholder="Add event description..."
               maxLength="200"
               rows="4"
@@ -156,18 +226,14 @@ export function AddConfModal({ open, setOpen }) {
             <div className="flex gap-5 mt-4">
               {dummyTechnologies.map((item) => (
                 <div key={item.id} className="flex items-center gap-1">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input type="checkbox" className="w-4 h-4" onChange={handleCheck} name={item.title}/>
                   <span className="text-md font-medium">{item.title}</span>
                 </div>
               ))}
             </div>
           </div>
-          <button className="mx-auto mt-8 flex items-center gap-3 py-3 px-6 bg-[--accent-color] rounded-2xl hover:bg-[--accent-color-light] transition-all duration-150">
-            <HiPlus className="text-white" />
-            <span className="text-lg font-semibold text-white">
-              Create event
-            </span>
-          </button>
+          <input className="btn btn__input2" type="submit" value="CREATE EVENT" />
+          {message}
         </form>
       </div>
     </>

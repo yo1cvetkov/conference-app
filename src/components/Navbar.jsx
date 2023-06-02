@@ -45,7 +45,7 @@ export default function Navbar() {
             className={`nav__links ${isNavShowing ? "show__nav" : "hide__nav"}`}
           >
             {links.map((obj, index) => {
-              return (
+              return ( obj.name === "REGISTER" && !logged || obj.name !== "REGISTER" ?
                 <li key={index}>
                   <NavLink
                     to={obj.path}
@@ -54,7 +54,7 @@ export default function Navbar() {
                   >
                     {obj.name}
                   </NavLink>
-                </li>
+                </li> : null
               );
             })}
           </ul>
@@ -64,7 +64,7 @@ export default function Navbar() {
               <HiUserCircle />
               Sign in</button>
             ) : <div className="end__point">
-            <input className="btn mx-auto mt-5" type="button" value="Sign out" onClick={logOutHandler} />
+            <input className="btn btn__input mx-auto" type="button" value={`${name}, Sign out`} onClick={logOutHandler} />
             </div>
             }
             
@@ -114,7 +114,7 @@ export function Modal({ openModal, setOpenModal}) {
         if(error.response.status === 401 || error.response.status === 403) {
           setErrorMessage(error.response.data.message);
         } else {
-          setErrorMessage('sorry backend failed');
+          setErrorMessage('Sorry backend failed');
         }
       })
     }
@@ -129,13 +129,13 @@ export function Modal({ openModal, setOpenModal}) {
             <p className="text-xl lg:text-3xl lg:font-semibold">Sign In</p>
             <form onSubmit={loginHandler}>
               <div className="flex flex-col text-[--accent-color] mt-8">
-                <label className="text-md font-medium">E-mail</label>
+                <label className="text-md font-medium">Username</label>
                 <input
                   type="text"
                   id="username_input"
                   value={username}
                   onChange={event => setUsername(event.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="Enter your username"
                   className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
                 />
               </div>
@@ -150,8 +150,9 @@ export function Modal({ openModal, setOpenModal}) {
                   className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
                 />
               </div>
-              <input className="btn mx-auto mt-5" type="submit" value="Sign in"/>
+              <input className="btn btn__input2 mt-5 mx-auto" type="submit" value="Sign in"/>
             </form>
+            <div className="text-2xl text-red-700">{errorMessage}</div>
           </div>
         </div>
       ) : null}

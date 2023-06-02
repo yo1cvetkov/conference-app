@@ -1,0 +1,35 @@
+.register__container{
+    display: grid;
+    place-items: center;
+    gap: 2rem;
+}
+
+.input__div{
+    display: flex;
+    gap: 5rem;
+    justify-content: space-between;
+}
+
+.reg__form{
+    display: grid;
+    gap: 2rem;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3);
+}
+
+.reg__div{
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
+    .reg__form{
+        min-width: var(--container-width-md);
+        gap: 1rem;
+    }
+    .input__div{
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+}

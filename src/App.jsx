@@ -16,6 +16,7 @@ function App() {
       <Navbar/>
       <Routes> 
             <Route index element={<Events />} />
+            <Route path="/conference" element={<Events />} />
             <Route path="/my_events" element={<MyEvents />} />
             <Route path="/users" element={<Users />} />
             <Route path='/conference/:id' element={<SinglePage />} />

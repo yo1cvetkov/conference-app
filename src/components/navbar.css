@@ -145,6 +145,10 @@ nav {
     animation-delay: 600ms;
   }
 
+  .nav__links li:nth-child(4) {
+    animation-delay: 900ms;
+  }
+
   @keyframes navAnimation {
     to {
       transform: rotateX(0);

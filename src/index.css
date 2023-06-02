@@ -96,6 +96,13 @@ svg {
 button {
   color: var(--color-white);
 }
+
+input{
+  box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3);
+  text-indent: 4px;
+  border-radius: 5px;
+  height: 35px;
+}
 .btn {
   width: fit-content;
   height: 42px;
@@ -109,16 +116,15 @@ button {
   font-weight: 600;
 }
 
-.btn {
-  width: fit-content;
-  height: 42px;
-  padding: 0.9rem 1rem;
-  background: var(--accent-color);
-  border-radius: 1rem;
-  transition: var(--transition);
-  display: flex;
-  align-items: center;
-  color: var(--color-white);
+.btn.btn__input {
+  height: auto;
+  padding: 0;
+  border-radius: 2px;
+  padding-inline: 5px;
+}
+
+.btn.btn__input2 {
+  height: auto;
 }
 
 .btn:hover {
