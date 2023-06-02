@@ -6,8 +6,21 @@ import { BiEdit } from "react-icons/bi";
 import { BsCalendar3 } from "react-icons/bs";
 import { BsFillClockFill } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
+import { technologiesData } from "../utils/technologiesData";
 
-function Conference({ id, name, date, time, isShow }) {
+function Conference({ id, name, date, time, isShow, technologies }) {
+  // Refactor this in utility function
+
+  const normalizedTechnologies = technologies.map((technology) =>
+    technology.trim().toLowerCase()
+  );
+  let filteredTechnologies = [];
+  for (let i = 0; i < technologiesData.length; i++) {
+    if (normalizedTechnologies[i] === technologiesData[i].technology) {
+      filteredTechnologies.push(technologiesData[i]);
+    }
+  }
+
   return (
     <div className="conference__main__div shadow-md">
       <div className="left__div">
@@ -30,20 +43,13 @@ function Conference({ id, name, date, time, isShow }) {
         <div className="tech__div">
           <p className="tech__p">Technologies :</p>
           <div className="icon__div">
-            <img
-              className="dev__icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
-            />
-
-            <img
-              className="dev__icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
-            />
-
-            <img
-              className="dev__icon"
-              src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain.svg"
-            />
+            {filteredTechnologies.map((technology) => (
+              <img
+                key={technology.id}
+                src={technology.icon}
+                className="dev__icon"
+              />
+            ))}
           </div>
         </div>
         <div className={isShow ? "attend__edit__div" : "cancel__div"}>

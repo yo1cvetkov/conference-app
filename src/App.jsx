@@ -8,7 +8,7 @@ import SinglePage from "./pages/SinglePage/SinglePage";
 
 function App() {
   return (
-    <div>
+    <>
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -19,7 +19,7 @@ function App() {
           <Route path="/sign-in" />
         </Routes>
       </BrowserRouter>
-    </div>
+    </>
   );
 }
 

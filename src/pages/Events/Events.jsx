@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./Events.css";
-import { conferenceData } from "../../conferenceData.js";
+// import { conferenceData } from "../../conferenceData.js";
 import Conference from "../../components/Conference.jsx";
 import { HiPlus } from "react-icons/hi";
 import { MdArrowDownward, MdClose } from "react-icons/md";
 import Sketch from "../../assets/sketch.png";
+import { useQuery } from "@tanstack/react-query";
+import { getConferences } from "../../utils/getConferences";
 
 const dummyTechnologies = [
   {
@@ -24,6 +26,11 @@ const dummyTechnologies = [
 function Events() {
   const [showNewConf, setShowNewConf] = useState(false);
 
+  const conferencesQuery = useQuery({
+    queryKey: ["conferences"],
+    queryFn: getConferences,
+  });
+
   return (
     <section className="container">
       <div className="events__container">
@@ -36,14 +43,15 @@ function Events() {
               <span className="text-lg font-medium">Most recent</span>
             </button>
           </div>
-          {conferenceData.map((obj, i) => {
+          {conferencesQuery.data?.map((conference) => {
             return (
               <Conference
-                key={i}
-                id={obj.id}
-                name={obj.name}
-                date={obj.date}
-                time={obj.time}
+                key={conference.id}
+                id={conference.id}
+                name={conference.title}
+                date={conference.startDate}
+                time={conference.startTime}
+                technologies={conference.technologies}
                 isShow={true}
               />
             );
