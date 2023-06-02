@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
             reject();
           } else {
             resolve(session);
-            setUser(user.signInUserSession.idToken.payload.name);
+            setUser(user.signInUserSession.idToken.payload);
           }
         });
       } else {

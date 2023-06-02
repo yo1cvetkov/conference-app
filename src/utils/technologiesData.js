@@ -14,4 +14,14 @@ export const technologiesData = [
     technology: "docker",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain.svg",
   },
+  {
+    id: 4,
+    technology: "python",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+  },
+  {
+    id: 5,
+    technology: "c#",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+  },
 ];

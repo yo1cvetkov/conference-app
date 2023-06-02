@@ -68,7 +68,7 @@ export default function Navbar() {
           <div className="end__point">
             {user ? (
               <span className="text-white font-semibold mr-6 capitalize">
-                Hi, {user.username || user}
+                Hi, {user.username || user.name}
               </span>
             ) : null}
             {authed ? (
@@ -347,7 +347,7 @@ export function LoginModal({
     authenticate(email, password)
       .then((data) => {
         setAuthed(true);
-        setUser(data.idToken.payload.name);
+        setUser(data.idToken.payload);
         setOpenModal(false);
         setEmail("");
         setPassword("");

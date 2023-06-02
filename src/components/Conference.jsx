@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./conference.css";
 import noImg from "../assets/noImg.jpg";
 import { Link } from "react-router-dom";
@@ -7,8 +7,17 @@ import { BsCalendar3 } from "react-icons/bs";
 import { BsFillClockFill } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
 import { technologiesData } from "../utils/technologiesData";
+import { AuthCtx } from "../context/AuthCtx";
 
-function Conference({ id, name, date, time, isShow, technologies }) {
+function Conference({
+  id,
+  name,
+  date,
+  startTime,
+  endTime,
+  isShow,
+  technologies,
+}) {
   // Refactor this in utility function
 
   const normalizedTechnologies = technologies.map((technology) =>
@@ -20,6 +29,8 @@ function Conference({ id, name, date, time, isShow, technologies }) {
       filteredTechnologies.push(technologiesData[i]);
     }
   }
+
+  const { authed } = useContext(AuthCtx);
 
   return (
     <div className="conference__main__div shadow-md">
@@ -35,7 +46,9 @@ function Conference({ id, name, date, time, isShow, technologies }) {
           </div>
           <div className="icon__name__div">
             <BsFillClockFill />
-            <p className="p__bold">{time}</p>
+            <p className="p__bold">
+              {startTime} - {endTime}
+            </p>
           </div>
         </div>
       </div>
@@ -53,16 +66,22 @@ function Conference({ id, name, date, time, isShow, technologies }) {
           </div>
         </div>
         <div className={isShow ? "attend__edit__div" : "cancel__div"}>
-          <Link>
-            <div className="edit__div">
-              {isShow ? <BiEdit /> : <FcCancel />}
-              <p className="edit__p">{isShow ? "Edit" : "Cancel Conference"}</p>
-            </div>
-          </Link>
+          {authed ? (
+            <Link>
+              <div className="edit__div">
+                {isShow ? <BiEdit /> : <FcCancel />}
+                <p className="edit__p">
+                  {isShow ? "Edit" : "Cancel Conference"}
+                </p>
+              </div>
+            </Link>
+          ) : null}
 
-          <Link to="/id" className={isShow ? "" : "hide__link"}>
-            <div className="btn">Attend +</div>
-          </Link>
+          {authed ? (
+            <Link to="/id" className={isShow ? "" : "hide__link"}>
+              <div className="btn">Attend +</div>
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>
