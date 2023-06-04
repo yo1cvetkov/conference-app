@@ -1,11 +1,15 @@
 import React, { useState, useContext } from "react";
 import "./Events.css";
+import { v4 as uuid } from "uuid";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import Conference from "../../components/Conference.jsx";
 import { HiPlus } from "react-icons/hi";
 import { MdArrowDownward, MdClose } from "react-icons/md";
 import Sketch from "../../assets/sketch.png";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getConferences } from "../../utils/getConferences";
+import createConference from "../../utils/createConference";
 import { technologiesData } from "../../utils/technologiesData";
 import Checkbox from "../../components/ui/Checkbox";
 import { AuthCtx } from "../../context/AuthCtx";
@@ -37,20 +41,24 @@ export default function Events() {
               <span className="text-lg font-medium">Most recent</span>
             </button>
           </div>
-          {conferencesQuery.data?.map((conference) => {
-            return (
-              <Conference
-                key={conference.id}
-                id={conference.id}
-                name={conference.title}
-                date={conference.startDate}
-                startTime={conference.startTime}
-                endTime={conference.endTime}
-                technologies={conference.technologies}
-                isShow={true}
-              />
-            );
-          })}
+          {conferencesQuery.isLoading ? (
+            <Skeleton count={10} className="h-28 rounded-xl w-full mb-5" />
+          ) : (
+            conferencesQuery.data.map((conference) => {
+              return (
+                <Conference
+                  key={conference.id}
+                  id={conference.id}
+                  name={conference.title}
+                  date={conference.startDate}
+                  startTime={conference.startTime}
+                  endTime={conference.endTime}
+                  technologies={conference.technologies}
+                  isShow={true}
+                />
+              );
+            })
+          )}
         </div>
         <div className="add__container">
           {authed ? (
@@ -85,6 +93,42 @@ export function AddConfModal({ open, setOpen }) {
   const { user } = useContext(AuthCtx);
 
   const creatorId = user ? user.sub : null;
+  const id = uuid();
+
+  const createConferenceData = {
+    id,
+    title,
+    startTime,
+    endTime,
+    startDate,
+    endDate,
+    url,
+    description,
+    technologies: selectedTechnologies,
+    creatorId,
+  };
+
+  function resetForm() {
+    setTitle("");
+    setDescription("");
+    setEndDate("");
+    setEndTime("");
+    setStartDate("");
+    setStartTime("");
+    setUrl("");
+    setSelectedTechnologies(null);
+  }
+
+  const queryClient = useQueryClient();
+
+  const conferenceMutation = useMutation({
+    mutationFn: createConference,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["conferences"]);
+      setOpen(false);
+      resetForm();
+    },
+  });
 
   return (
     <>
@@ -104,7 +148,12 @@ export function AddConfModal({ open, setOpen }) {
           </button>
         </div>
 
-        <form>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            conferenceMutation.mutate(createConferenceData);
+          }}
+        >
           <div className="flex flex-col text-[--accent-color] mt-8">
             <label className="text-md font-medium">Title</label>
             <input

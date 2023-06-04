@@ -23,11 +23,17 @@ function Conference({
   const normalizedTechnologies = technologies.map((technology) =>
     technology.trim().toLowerCase()
   );
+
   let filteredTechnologies = [];
-  for (let i = 0; i < technologiesData.length; i++) {
-    if (normalizedTechnologies[i] === technologiesData[i].technology) {
-      filteredTechnologies.push(technologiesData[i]);
-    }
+
+  for (let i = 0; i < normalizedTechnologies.length; i++) {
+    let singleTech = normalizedTechnologies[i];
+
+    const foundObj = technologiesData.find(
+      (obj) => obj.technology === singleTech
+    );
+
+    filteredTechnologies.push(foundObj);
   }
 
   const { authed } = useContext(AuthCtx);
