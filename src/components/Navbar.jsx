@@ -1,5 +1,5 @@
 import "./navbar.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import Logo from "../assets/Logo.png";
 import { Link, NavLink } from "react-router-dom";
 import { links } from "../data";
@@ -9,25 +9,24 @@ import { createPortal } from "react-dom";
 import "./SignInModal.css";
 import { resetUserSession, setUserSession } from "../service/AuthService";
 import axios from "axios";
-import { getUser} from "../service/AuthService";
+import {getUser} from "../service/AuthService";
+import { LoggedContext } from "../AuthContext";
+
+
+
 
 export default function Navbar() {
   const [isNavShowing, setIsNavShowing] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [logged, setLogged] = useState(false);
   const user = getUser();
   const name = user !== 'undefined' && user ? user.username : "";
+  const loggedC = useContext(LoggedContext);
+
 
   useEffect(()=>{
-    getUser() !== null ? setLogged(true) : setLogged(false);
+    getUser() !== null ? loggedC.setLogged(true) : loggedC.setLogged(false);
   }, [openModal])
   
-
-    const logOutHandler = () => {
-      resetUserSession();
-      setLogged(false);
-    }
- 
 
 
   return (
@@ -45,7 +44,7 @@ export default function Navbar() {
             className={`nav__links ${isNavShowing ? "show__nav" : "hide__nav"}`}
           >
             {links.map((obj, index) => {
-              return ( obj.name === "REGISTER" && !logged || obj.name !== "REGISTER" ?
+              return ( obj.name === "REGISTER" && !loggedC.logged || obj.name !== "REGISTER" ?
                 <li key={index}>
                   <NavLink
                     to={obj.path}
@@ -59,12 +58,12 @@ export default function Navbar() {
             })}
           </ul>
           <div className="end__point">
-            {logged === false ? (
+            {loggedC.logged === false ? (
               <button className="sign__in-btn" onClick={() => setOpenModal(true)}>
               <HiUserCircle />
               Sign in</button>
             ) : <div className="end__point">
-            <input className="btn btn__input mx-auto" type="button" value={`${name}, Sign out`} onClick={logOutHandler} />
+            <input className="btn btn__input mx-auto" type="button" value={`${name}, Sign out`} onClick={loggedC.logOutHandler} />
             </div>
             }
             
@@ -107,8 +106,6 @@ export function Modal({ openModal, setOpenModal}) {
 
       axios.post(loginUrl, requestBody, requestConfig).then(response => {
         setUserSession(response.data.user, response.data.token);
-        document.getElementById('username_input').value = '';
-        document.getElementById('password_input').value = '';
         setOpenModal(false);
       }).catch((error)=>{
         if(error.response.status === 401 || error.response.status === 403) {

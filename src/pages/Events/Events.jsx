@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Events.css";
 import { conferenceData } from "../../conferenceData.js";
 import Conference from "../../components/Conference.jsx";
@@ -6,6 +6,10 @@ import { HiPlus } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
 import Sketch from "../../assets/sketch.png";
 import axios from "axios";
+import {getUser} from "../../service/AuthService";
+import { LoggedContext } from "../../AuthContext";
+import { ConferenceState } from "../../App";
+
 
 const dummyTechnologies = [
   {
@@ -24,6 +28,9 @@ const dummyTechnologies = [
 
 function Events() {
   const [showNewConf, setShowNewConf] = useState(false);
+  const loggedC = useContext(LoggedContext);
+  const confArr = useContext(ConferenceState);
+
 
   return (
     <section className="container">
@@ -48,12 +55,12 @@ function Events() {
           })}
         </div>
         <div className="add__container">
-          <button
+          {loggedC.logged && <button
             className="text-white bg-[--accent-color] fixed bottom-10 right-10 text-4xl rounded-full p-5 shadow-xl"
             onClick={() => setShowNewConf(true)}
           >
             <HiPlus />
-          </button>
+          </button>}
           <div className="quote__div">
             <h2 className="quote__h2">
               Make sure that you're signed in before attending an event
@@ -80,7 +87,6 @@ export function AddConfModal({ open, setOpen }) {
   const [description, setDescription] = useState('');
   const [technologies, setTechnologies] = useState([]);
   const [message, setMessage] = useState(null);
-  console.log(technologies);
 
   const handleCheck = (event) => {
     setTechnologies(oldVal => event.target.checked ? [...oldVal, event.target.name] : oldVal.map(it=>it===event.target.name?'':it).filter(it=>it!==''));
@@ -101,6 +107,7 @@ export function AddConfModal({ open, setOpen }) {
 
         const requestBody = {
             name: name,
+            author_id: getUser().username,
             startDate: startDate,
             endDate: endDate,
             startTime: startTime,
