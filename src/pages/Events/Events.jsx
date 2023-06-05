@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import "./Events.css";
 import { v4 as uuid } from "uuid";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -21,7 +20,6 @@ const technologies = mappedTechnologies.map(
 
 export default function Events() {
   const [showNewConf, setShowNewConf] = useState(false);
-
   const { authed } = useContext(AuthCtx);
 
   const conferencesQuery = useQuery({
@@ -30,15 +28,19 @@ export default function Events() {
   });
 
   return (
-    <section className="container">
-      <div className="events__container">
+    <section className="my-40">
+      <div className="grid grid-cols-1 lg:grid-cols-4 text-[--accent-color] gap-8 relative">
         <AddConfModal open={showNewConf} setOpen={setShowNewConf} />
-        <div className="conference__container">
-          <div className="title__div">
-            <h2 className="title__h2">Upcoming Events</h2>
-            <button className="sort__btn flex items-center gap-1 text-[--accent-color]">
-              <MdArrowDownward className="text-lg" />
-              <span className="text-lg font-medium">Most recent</span>
+        <div className="lg:col-start-1 lg:col-end-4 flex flex-col gap-8">
+          <div className="flex justify-between items-center">
+            <h2 className="font-bold text-xl sm:text-2xl lg:text-3xl">
+              Upcoming Events
+            </h2>
+            <button className="hover:text-[--accent-color-light] flex items-center gap-1 text-[--accent-color] transition-all duration-200">
+              <MdArrowDownward className="text-sm lg:text-lg" />
+              <span className="text-sm md:text-md lg:text-lg font-medium">
+                Most recent
+              </span>
             </button>
           </div>
           {conferencesQuery.isLoading ? (
@@ -55,22 +57,23 @@ export default function Events() {
                   endTime={conference.endTime}
                   technologies={conference.technologies}
                   isShow={true}
+                  creatorId={conference.creatorId}
                 />
               );
             })
           )}
         </div>
-        <div className="add__container">
+        <div className="flex flex-col items-center gap-8 mt-16">
           {authed ? (
             <button
-              className="text-white bg-[--accent-color] fixed bottom-10 right-10 text-4xl rounded-full p-5 shadow-xl"
+              className="text-white bg-[--accent-color] fixed bottom-10 right-10 text-4xl rounded-full p-5 shadow-3xl"
               onClick={() => setShowNewConf(true)}
             >
               <HiPlus />
             </button>
           ) : null}
-          <div className="quote__div">
-            <h2 className="quote__h2">
+          <div className="pb-1">
+            <h2 className="px-9 font-semibold text-2xl">
               Make sure that you're signed in before attending an event!
             </h2>
             <img src={Sketch} alt="enjoy" />
@@ -132,11 +135,12 @@ export function AddConfModal({ open, setOpen }) {
 
   return (
     <>
+      {/* Add the overlay */}
       <div
         className={`${
           open
-            ? "h-auto opacity-100 pointer-events-auto"
-            : "h-0 opacity-0 pointer-events-none"
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         } transition-all inset-2 overflow-scroll xl:overflow-auto ease-linear py-6 px-3 duration-200 fixed xl:py-7 xl:px-14 z-30 xl:bottom-5 xl:right-5 xl:left-auto xl:top-auto xl:w-1/3 bg-white shadow-md ring-1 ring-[--color-gray-light-transparent] rounded-lg`}
       >
         <div className="flex justify-between items-center">

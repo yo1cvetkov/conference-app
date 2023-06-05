@@ -8,8 +8,6 @@ import { HiUserCircle } from "react-icons/hi";
 import { IoMdExit } from "react-icons/io";
 import { createPortal } from "react-dom";
 import UserPool from "../aws/UserPool";
-
-import "./SignInModal.css";
 import { AuthCtx, useAuth } from "../context/AuthCtx";
 
 export default function Navbar() {
@@ -18,13 +16,15 @@ export default function Navbar() {
   const [openSignupModal, setOpenSignupModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, setUser, authed, setAuthed, getSession, logout } = useAuth();
+  const { user, authed, setAuthed, getSession, logout } = useAuth();
 
   useEffect(() => {
     getSession().then(() => {
       setAuthed(true);
     });
   }, []);
+
+  console.log(user);
 
   return (
     <>
@@ -40,32 +40,54 @@ export default function Navbar() {
         email={email}
         setEmail={setEmail}
       />
-      <nav>
-        <div className="container nav__container">
+      <nav className="w-screen py-6 bg-[--accent-color] grid place-items-center fixed top-0 left-0 z-10 drop-shadow-xl">
+        <div className="container px-8 lg:px-0 h-full flex justify-between items-center relative">
           <div className="logo__div">
-            <Link to="/" className="logo__link">
-              <p className="text-2xl text-white">Conference</p>
+            <Link to="/" className="flex items-end">
+              <p className="text-2xl text-white hidden lg:block">Conference</p>
               <img src={Logo} alt="Nav Logo" className="h-10" />
             </Link>
           </div>
           <ul
-            className={`nav__links ${isNavShowing ? "show__nav" : "hide__nav"}`}
+            className={`nav__links absolute top-[56px] -right-[10%] -left-[10%] gap-0 flex-col flex lg:flex-row lg:items-center lg:gap-10 lg:static ${
+              isNavShowing ? "flex lg:flex" : "hidden lg:flex"
+            }`}
           >
-            {links.map((obj, index) => {
-              return (
-                <li key={index}>
-                  <NavLink
-                    to={obj.path}
-                    onClick={() => setIsNavShowing((oldVal) => false)}
-                    className={({ isActive }) => (isActive ? "active-nav" : "")}
-                  >
-                    {obj.name}
-                  </NavLink>
-                </li>
-              );
-            })}
+            <li className="text-white font-semibold h-16 w-full lg:h-auto lg:w-auto">
+              <NavLink
+                to="/"
+                onClick={() => setIsNavShowing((oldVal) => false)}
+                className={({ isActive }) =>
+                  isActive ? "relative text-white lg:border-b lg:pb-1" : null
+                }
+              >
+                EVENTS
+              </NavLink>
+            </li>
+            <li className="text-white font-semibold h-16 w-full lg:h-auto lg:w-auto">
+              <NavLink
+                to={`/my-events/${user ? user.sub : null}`}
+                onClick={() => setIsNavShowing((oldVal) => false)}
+                className={({ isActive }) =>
+                  isActive ? "relative text-white lg:border-b lg:pb-1" : null
+                }
+              >
+                MY EVENTS
+              </NavLink>
+            </li>
+            <li className="text-white font-semibold h-16 w-full lg:h-auto lg:w-auto">
+              <NavLink
+                to="/users"
+                onClick={() => setIsNavShowing((oldVal) => false)}
+                className={({ isActive }) =>
+                  isActive ? "relative text-white lg:border-b lg:pb-1" : null
+                }
+              >
+                USERS
+              </NavLink>
+            </li>
           </ul>
-          <div className="end__point">
+          <div className="flex items-center">
             {user ? (
               <span className="text-white font-semibold mr-6 capitalize">
                 Hi, {user.username || user.name}
@@ -73,23 +95,25 @@ export default function Navbar() {
             ) : null}
             {authed ? (
               <button
-                className="ring-1 flex items-center gap-2 rounded-lg py-1 px-2 hover:bg-[--accent-color-dark] transition-all duration-200"
+                className="text-[--color-gray-light] lg:ring-1 lg:text-white flex items-center gap-2 rounded-lg py-1 px-2 lg:hover:bg-[--accent-color-dark] transition-all duration-200"
                 onClick={() => logout()}
               >
-                <IoMdExit className="text-md" />
-                <span className="text-md font-semibold">Log out</span>
+                <IoMdExit className="text-3xl lg:text-xl" />
+                <span className="text-md font-semibold hidden lg:inline">
+                  Log out
+                </span>
               </button>
             ) : (
               <div className="flex lg:flex-row gap-6">
                 <button
-                  className="sign__in-btn"
+                  className="flex items-center text-md font-semibold gap-1 text-white"
                   onClick={() => setOpenLoginModal(true)}
                 >
-                  <HiUserCircle />
+                  <HiUserCircle className="text-2xl" />
                   Sign In
                 </button>
                 <button
-                  className="sign__up-btn"
+                  className="border-small-white px-4 py-2 font-semibold rounded-lg text-white hover:bg-[--accent-color-dark] transition-all duration-200"
                   onClick={() => setOpenSignupModal(true)}
                 >
                   Sign up
@@ -99,7 +123,7 @@ export default function Navbar() {
 
             <button
               onClick={() => setIsNavShowing((oldVal) => !oldVal)}
-              className="nav__toggle-btn"
+              className="inline-block bg-transparent text-3xl text-white ml-5 lg:hidden"
             >
               <GoThreeBars />
             </button>
@@ -186,7 +210,7 @@ export function SignupModal({ openModal, setOpenModal }) {
       {openModal ? (
         <div className="relative flex item-center justify-center">
           <div
-            className="sign-in__modal"
+            className="h-screen w-screen fixed top-0 z-20 text-white bg-[--color-black-transparent]"
             onClick={() => {
               setOpenModal(false);
               setError(null);
@@ -363,7 +387,7 @@ export function LoginModal({
       {openModal ? (
         <div className="relative flex item-center justify-center">
           <div
-            className="sign-in__modal"
+            className="h-screen w-screen fixed top-0 z-20 text-white bg-[--color-black-transparent]"
             onClick={() => {
               setOpenModal(false);
               setError(null);
@@ -403,8 +427,11 @@ export function LoginModal({
               {error ? (
                 <p className="text-sm text-red-500 font-light mt-2">{error}</p>
               ) : null}
-              <button className="btn mx-auto mt-5" type="submit">
-                Sign In
+              <button
+                className="mx-auto col-span-2 self-center mt-8 text-lg block font-semibold text-white gap-3 py-3 px-6 bg-[--accent-color] rounded-2xl hover:bg-[--accent-color-light] transition-all duration-150"
+                type="submit"
+              >
+                Sign in
               </button>
             </form>
           </div>

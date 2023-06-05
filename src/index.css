@@ -7,10 +7,6 @@
 *::after {
   margin: 0;
   padding: 0;
-  border: 0;
-  outline: 0;
-  list-style: none;
-  text-decoration: none;
   box-sizing: border-box;
 }
 
@@ -41,62 +37,75 @@ body {
   color: #000;
   line-height: 1.7;
   overflow-x: hidden;
-  background: var(--bg-color);
+  /* background: var(--bg-color); */
 }
 
-.container {
+.border-small-white {
+  border: 1px solid white;
+  border-radius: 15px;
+}
+
+.input__border {
+  border: 1px solid var(--color-gray-light-transparent);
+}
+
+.error__border {
+  border: 1px solid rgb(239, 68, 68);
+}
+
+/* .container {
   width: var(--container-width-lg);
   max-width: 1920px;
   margin-inline: auto;
-}
+} */
 
-section {
+/* section {
   margin-top: 8rem;
   margin-bottom: 8rem;
-}
+} */
 
-h1,
+/* h1,
 h2,
 h3,
 h4,
 h5 {
   line-height: 1.2;
   color: var(--accent-color);
-}
+} */
 
-h2 {
+/* h2 {
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -2.2px;
   margin-bottom: 2rem;
-}
-h3 {
+} */
+/* h3 {
   font-size: 1.5rem;
-}
+} */
 
-a {
+/* a {
   color: var(--bg-color);
   font-weight: 600;
-}
+} */
 
-img {
+/* img {
   object-fit: cover;
   width: 100%;
-}
+} */
 
-p {
+/* p {
   word-wrap: break-word;
   color: var(--accent-color);
-}
+} */
 
-svg {
+/* svg {
   font-size: 25px;
-}
+} */
 
-button {
+/* button {
   color: var(--color-white);
-}
-.btn {
+} */
+/* .btn {
   width: fit-content;
   height: 42px;
   padding: 0.9rem 1.8rem;
@@ -107,9 +116,9 @@ button {
   align-items: center;
   color: var(--color-white);
   font-weight: 600;
-}
+} */
 
-.btn {
+/* .btn {
   width: fit-content;
   height: 42px;
   padding: 0.9rem 1rem;
@@ -119,17 +128,17 @@ button {
   display: flex;
   align-items: center;
   color: var(--color-white);
-}
+} */
 
-.btn:hover {
+/* .btn:hover {
   cursor: pointer;
   background-color: var(--accent-color-light);
   color: var(--color-white);
-}
+} */
 
 /*=========RESPONSIVE FOR TABLETS=============*/
 @media screen and (max-width: 1024px) {
-  .container {
+  /* .container {
     width: var(--container-width-md);
   }
   h1 {
@@ -137,14 +146,14 @@ button {
   }
   h2 {
     font-size: 2.6rem;
-  }
+  } */
 }
 
 /*=========RESPONSIVE FOR PHONES=============*/
 @media screen and (max-width: 600px) {
-  h1,
+  /* h1,
   h2 {
     font-size: 1.8rem;
     line-height: 1.3;
-  }
+  } */
 }

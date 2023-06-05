@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import User from "../../components/User.jsx";
-import { userData } from "../../userData.js";
+import Skeleton from "react-loading-skeleton";
 import Sketch from "../../assets/sketch.png";
-import "./Users.css";
 import { createPortal } from "react-dom";
 import {
   MdApartment,
@@ -14,37 +13,38 @@ import {
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { BiRun } from "react-icons/bi";
+import { useQuery } from "@tanstack/react-query";
+import { getAllUsers } from "../../utils/getAllUsers.js";
 
 function Users() {
-  const [openUserDetails, setOpenUserDetails] = useState(false);
+  const usersQuery = useQuery({
+    queryKey: ["users"],
+    queryFn: getAllUsers,
+  });
 
   return (
-    <section className="container">
-      <UserDetails
-        openModal={openUserDetails}
-        setOpenModal={setOpenUserDetails}
-      />
-      <h2 className="users__title">Users</h2>
-      <div className="users__container">
-        <div className="user__info__container">
-          {userData.map((obj, i) => {
-            return (
-              <User
-                key={i}
-                id={obj.id}
-                name={obj.name}
-                desc={obj.desc}
-                dep={obj.dep}
-                del={obj.del}
-                setOpenUserDetails={setOpenUserDetails}
-              />
-            );
-          })}
+    <section className="container my-40">
+      <h2 className="font-bold text-[--accent-color] text-2xl mb-5 lg:text-2xl">
+        Users
+      </h2>
+      <div className="grid items-start grid-cols-1 lg:grid-cols-4 gap-12 text-[--accent-color]">
+        <div className="col-start-1 gap-12 col-end-4 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2">
+          {usersQuery.isLoading ? (
+            <div className="flex gap-12">
+              <Skeleton count={3} className="w-60 h-52 mb-12" />
+              <Skeleton count={3} className="w-60 h-52 mb-12" />
+              <Skeleton count={3} className="w-60 h-52 mb-12" />
+            </div>
+          ) : (
+            usersQuery.data?.map((confUser) => (
+              <User key={confUser.id} confUser={confUser} />
+            ))
+          )}
         </div>
-        <div className="pic__container">
-          <div className="quote__div">
-            <h2 className="quote__h2">
-              Make sure that you're signed in before attending an event
+        <div>
+          <div className="pb-1">
+            <h2 className="px-9 font-semibold text-2xl">
+              Make sure that you're signed in before attending an event!
             </h2>
             <img src={Sketch} alt="enjoy" />
           </div>
@@ -56,14 +56,21 @@ function Users() {
 
 export default Users;
 
-export function UserDetails({ openModal, setOpenModal }) {
+export function UserDetails({
+  openModal,
+  setOpenModal,
+  name,
+  title,
+  department,
+  deliveryUnit,
+}) {
   return createPortal(
     <>
       <>
         <div
           className={`${
             openModal ? "visible" : "hidden"
-          } bg-[--color-black-transparent] top-0 z-10 left-0 fixed h-full w-full`}
+          } bg-[--color-black-transparent] top-0 z-20 left-0 fixed h-full w-full`}
           onClick={() => setOpenModal(false)}
         />
         <div
@@ -89,7 +96,7 @@ export function UserDetails({ openModal, setOpenModal }) {
                 </span>
               </div>
               <p className="font-semibold text-[--accent-color] text-2xl">
-                Petar Petrovic
+                {name}
               </p>
             </div>
             <div className="mb-5 lg:mb-0">
@@ -100,7 +107,7 @@ export function UserDetails({ openModal, setOpenModal }) {
                 </span>
               </div>
               <p className="font-semibold text-[--accent-color] text-2xl">
-                Full-stack developer
+                {title}
               </p>
             </div>
             <div className="mb-5 lg:mb-0">
@@ -111,7 +118,7 @@ export function UserDetails({ openModal, setOpenModal }) {
                 </span>
               </div>
               <p className="font-semibold text-[--accent-color] text-2xl">
-                JavaScript
+                {department}
               </p>
             </div>
             <div className="mb-5 lg:mb-0">
@@ -122,7 +129,7 @@ export function UserDetails({ openModal, setOpenModal }) {
                 </span>
               </div>
               <p className="font-semibold text-[--accent-color] text-2xl">
-                Java 2
+                {deliveryUnit}
               </p>
             </div>
           </div>

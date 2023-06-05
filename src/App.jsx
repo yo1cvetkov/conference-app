@@ -1,24 +1,45 @@
-import React, { useState, useContext } from "react";
-import Navbar from "./components/Navbar";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Events from "./pages/Events/Events.jsx";
 import MyEvents from "./pages/MyEvents/MyEvents.jsx";
 import Users from "./pages/Users/Users.jsx";
 import SinglePage from "./pages/SinglePage/SinglePage";
+import RootLayout from "./layout/RootLayout";
+import SimplePage from "./pages/SinglePage/SimplePage.jsx";
 
-function App() {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: <Events />,
+      },
+      {
+        path: "/my-events/:id",
+        element: <MyEvents />,
+      },
+      {
+        path: "/users",
+        element: <Users />,
+      },
+      {
+        path: "/conference",
+        children: [
+          {
+            path: "/conference/:id",
+            element: <SimplePage />,
+          },
+        ],
+      },
+    ],
+  },
+]);
+
+function App({ children }) {
   return (
     <>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route index element={<Events />} />
-          <Route path="/my_events" element={<MyEvents />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/conference/:id" element={<SinglePage />} />
-          <Route path="/sign-in" />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router}>{children}</RouterProvider>
     </>
   );
 }

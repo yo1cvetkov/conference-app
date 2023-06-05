@@ -1,128 +1,6 @@
-nav {
-  height: 5rem;
-  width: 100vw;
-  background: var(--accent-color);
-  display: grid;
-  place-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  filter: drop-shadow(0.1rem 0 0.4rem var(--accent-color));
-}
-
-.nav__toggle-btn {
-  display: none;
-}
-
-.sign__in-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-weight: 600;
-}
-
-.sign__up-btn {
-  border: 1px solid white;
-  padding-inline: 1rem;
-  padding-block: 0.5rem;
-  font-weight: 600;
-  border-radius: 15px;
-}
-
-.sign__up-btn:hover {
-  background-color: var(--accent-color-dark);
-  transition: all 200ms ease-in-out;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.nav__container {
-  height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
-.logo__link {
-  display: flex;
-  align-items: flex-end;
-}
-.end__point {
-  display: flex;
-  align-items: center;
-}
-.nav__links {
-  display: flex;
-  gap: 3.5rem;
-  align-items: center;
-}
-
-.nav__links a {
-  transition: var(--transition);
-  color: var(--color-white);
-}
-
-.nav__links a:hover {
-  color: var(--color-white);
-}
-
-.active-nav {
-  position: relative;
-  color: var(--color-white);
-}
-
-.active-nav::after {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 0.05rem;
-  left: 0;
-  right: 0;
-  bottom: -0.2rem;
-  background: var(--color-white);
-  color: var(--color-white);
-  position: absolute;
-}
-
-.nav__toggle-btn {
-  color: var(--color-white);
-}
-
 @media screen and (max-width: 1024px) {
-  .nav__toggle-btn {
-    display: inline-block;
-    background: transparent;
-    font-size: 1.8rem;
-    cursor: pointer;
-    margin-left: 1.5rem;
-  }
-
-  .nav__toggle-btn svg {
-    color: var(--color-white);
-  }
-
   .nav__links {
-    position: absolute;
-    top: 100%;
-    right: -10%;
-    left: -10%;
-    flex-direction: column;
-    gap: 0;
     perspective: 400px;
-  }
-
-  .active-nav {
-    display: none;
-  }
-
-  .active-nav::after {
-    display: none;
-  }
-
-  .nav__links li {
-    height: 4rem;
-    width: 100%;
   }
 
   .nav__links li a {
@@ -138,12 +16,7 @@ nav {
     filter: drop-shadow(0 0 0 var(--accent-color));
     cursor: pointer;
   }
-  .show__nav {
-    display: flex;
-  }
-  .hide__nav {
-    display: none;
-  }
+
   .nav__links li {
     height: 4rem;
     width: 100%;
