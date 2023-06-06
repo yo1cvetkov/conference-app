@@ -1,7 +1,7 @@
 export const links = [
     {
         name: "EVENTS",
-        path: "/conference"
+        path: "/"
     },
     {
         name: "MY EVENTS",

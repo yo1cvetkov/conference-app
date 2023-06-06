@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
 import "./Events.css";
-import { conferenceData } from "../../conferenceData.js";
+import React, { useState, useContext } from "react";
 import Conference from "../../components/Conference.jsx";
 import { HiPlus } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
@@ -8,7 +7,7 @@ import Sketch from "../../assets/sketch.png";
 import axios from "axios";
 import {getUser} from "../../service/AuthService";
 import { LoggedContext } from "../../AuthContext";
-import { ConferenceState } from "../../App";
+import { DataContext } from "../../DataContext";
 
 
 const dummyTechnologies = [
@@ -29,7 +28,8 @@ const dummyTechnologies = [
 function Events() {
   const [showNewConf, setShowNewConf] = useState(false);
   const loggedC = useContext(LoggedContext);
-  const confArr = useContext(ConferenceState);
+  const confArr = useContext(DataContext).conferences;
+  if(!confArr) return <div>loading...</div>
 
 
   return (
@@ -41,17 +41,8 @@ function Events() {
             <h2 className="title__h2">Upcoming Events</h2>
             <p className="sort__btn">&#8595; Most recent</p>
           </div>
-          {conferenceData.map((obj, i) => {
-            return (
-              <Conference
-                key={i}
-                id={obj.id}
-                name={obj.name}
-                date={obj.date}
-                time={obj.time}
-                isShow={true}
-              />
-            );
+          {confArr.map((obj, i) => {
+            return <Conference key={i} id={obj.author_id} name={obj.name} date={obj.startDate} time={obj.startTime} attenders={obj.attenders} />
           })}
         </div>
         <div className="add__container">
@@ -87,6 +78,8 @@ export function AddConfModal({ open, setOpen }) {
   const [description, setDescription] = useState('');
   const [technologies, setTechnologies] = useState([]);
   const [message, setMessage] = useState(null);
+  const isLogged = useContext(LoggedContext).logged;
+  if(!isLogged) setOpen(false);
 
   const handleCheck = (event) => {
     setTechnologies(oldVal => event.target.checked ? [...oldVal, event.target.name] : oldVal.map(it=>it===event.target.name?'':it).filter(it=>it!==''));
@@ -118,7 +111,6 @@ export function AddConfModal({ open, setOpen }) {
         }
 
         axios.post(crudURL, requestBody, requestConfig).then(response => {
-          console.log(response);
             setMessage("Konferencija kreirana!");
         }).catch(error => {
             if(error.response.status === 401) {

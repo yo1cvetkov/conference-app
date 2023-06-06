@@ -1,5 +1,5 @@
 import "./navbar.css";
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Logo from "../assets/Logo.png";
 import { Link, NavLink } from "react-router-dom";
 import { links } from "../data";
@@ -7,8 +7,6 @@ import { GoThreeBars } from "react-icons/go";
 import {HiUserCircle} from "react-icons/hi"
 import { createPortal } from "react-dom";
 import "./SignInModal.css";
-import { resetUserSession, setUserSession } from "../service/AuthService";
-import axios from "axios";
 import {getUser} from "../service/AuthService";
 import { LoggedContext } from "../AuthContext";
 
@@ -26,8 +24,8 @@ export default function Navbar() {
   useEffect(()=>{
     getUser() !== null ? loggedC.setLogged(true) : loggedC.setLogged(false);
   }, [openModal])
-  
 
+  
 
   return (
     <>
@@ -44,16 +42,16 @@ export default function Navbar() {
             className={`nav__links ${isNavShowing ? "show__nav" : "hide__nav"}`}
           >
             {links.map((obj, index) => {
-              return ( obj.name === "REGISTER" && !loggedC.logged || obj.name !== "REGISTER" ?
+              return ( loggedC.logged && obj.name === "REGISTER" || !loggedC.logged && obj.name === "MY EVENTS" ? null : 
                 <li key={index}>
-                  <NavLink
-                    to={obj.path}
-                    onClick={() => setIsNavShowing((oldVal) => false)}
-                    className={({ isActive }) => (isActive ? "active-nav" : "")}
-                  >
-                    {obj.name}
-                  </NavLink>
-                </li> : null
+               <NavLink
+                 to={obj.path}
+                 onClick={() => setIsNavShowing((oldVal) => false)}
+                 className={({ isActive }) => (isActive ? "active-nav" : "")}
+               >
+                 {obj.name}
+               </NavLink>
+               </li>
               );
             })}
           </ul>
@@ -81,41 +79,18 @@ export default function Navbar() {
 }
 
 export function Modal({ openModal, setOpenModal}) {
-    const loginUrl = 'https://a7wght99zk.execute-api.eu-central-1.amazonaws.com/test/login'
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState(null);
+    const { loginHandler, errorMessage } = useContext(LoggedContext);
 
-    const loginHandler = (event) => {
+    const handleLogin = (event) => {
       event.preventDefault();
-      if(username.trim() === '' || password.trim()===""){
-        setErrorMessage('Username and passwords are both required');
-      }
-      setErrorMessage(null);
-      const requestConfig = {
-        headers: {
-          'x-api-key': 'qCN51M0Zbs5FRo0r8IdHt90raGmJYSlP3FUsX1jo'
-        }
-      }
+      loginHandler(username, password, closeModal, setUsername, setPassword);
+  }
 
-      const requestBody = {
-        username: username,
-        password: password
-      }
-
-      axios.post(loginUrl, requestBody, requestConfig).then(response => {
-        setUserSession(response.data.user, response.data.token);
-        setOpenModal(false);
-      }).catch((error)=>{
-        if(error.response.status === 401 || error.response.status === 403) {
-          setErrorMessage(error.response.data.message);
-        } else {
-          setErrorMessage('Sorry backend failed');
-        }
-      })
+    const closeModal = () => {
+      setOpenModal(false);
     }
-
 
   return createPortal(
     <>
@@ -124,7 +99,7 @@ export function Modal({ openModal, setOpenModal}) {
           <div className="sign-in__modal" onClick={() => setOpenModal(false)} />
           <div className="flex fixed z-20 font-semibold h-min flex-col mt-24 bg-white p-10 rounded-lg lg:w-1/2 lg:mx-auto">
             <p className="text-xl lg:text-3xl lg:font-semibold">Sign In</p>
-            <form onSubmit={loginHandler}>
+            <form onSubmit={handleLogin}>
               <div className="flex flex-col text-[--accent-color] mt-8">
                 <label className="text-md font-medium">Username</label>
                 <input

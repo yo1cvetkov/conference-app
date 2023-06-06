@@ -9,6 +9,9 @@ function Register() {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [department, setDepartment] = useState('');
+    const [deployment, setDeployment] = useState('');
+    const [title, setTitle] = useState('');
     const [message, setMessage] = useState(null);
 
     const submitHandler = (event) => {
@@ -28,11 +31,17 @@ function Register() {
             username: username,
             email: email,
             name: name,
-            password: password
+            password: password,
+            department: department,
+            deployment: deployment,
+            title: title
         }
 
         axios.post(registerUrl, requestBody, requestConfig).then(response => {
-            setMessage("Uspesno ste se registrovali!")
+            setMessage("Uspesno ste se registrovali!");
+            setTimeout(()=>{
+                setMessage(null)
+            }, 1500);
         }).catch(error => {
             if(error.response.status === 401) {
                 setMessage(error.response.data.message);
@@ -53,6 +62,9 @@ function Register() {
             <div className='input__div'><p>Email:</p><input type="text" value={email} onChange={event => setEmail(event.target.value)}/></div>
             <div className='input__div'><p>Username:</p><input type="text" value={username} onChange={event => setUsername(event.target.value)}/></div>
             <div className='input__div'><p>Password:</p><input type="password" value={password} onChange={event => setPassword(event.target.value)}/></div>
+            <div className='input__div'><p>Depatment:</p><input type="text" value={department} onChange={event => setDepartment(event.target.value)}/></div>
+            <div className='input__div'><p>Deployment:</p><input type="text" value={deployment} onChange={event => setDeployment(event.target.value)}/></div>
+            <div className='input__div'><p>Title:</p><input type="text" value={title} onChange={event => setTitle(event.target.value)}/></div>
             <div className='reg__div'><input className='btn btn__input2' type="submit" value="REGISTER" /></div>
         </form>
         <h2 className='title__h2'>{message}</h2>

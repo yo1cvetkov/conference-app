@@ -1,22 +1,29 @@
-import React from "react";
 import "./conference.css";
+import React, { useContext, useState } from "react";
+import { LoggedContext } from "../AuthContext";
+import { Link } from "react-router-dom";
 import noImg from "../assets/noImg.jpg";
 import { SiJavascript } from "react-icons/si";
-import { Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
-import { BsCalendar3, BsClockFill } from "react-icons/bs";
-import { BsFillClockFill } from "react-icons/bs";
+import { BsCalendar3,  BsFillClockFill } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
+import { getUser } from "../service/AuthService";
+
+
 
 function Conference(props) {
-  const { id, name, date, time, isShow } = props;
+  const { name, date, time, id, attenders } = props;
+  const logContext = useContext(LoggedContext);
+  const attendUpdate = () => {
+
+  } 
 
   return (
     <div className="conference__main__div">
       <div className="left__div">
         <img className="no__img" src={noImg} alt="no_image" />
         <div className="info__div">
-          <Link to={`/conference/${id}`}>
+          <Link to={`/conference/${name}`}>
             <h2 className="name__h2">{name}</h2>
           </Link>
           <div className="icon__name__div">
@@ -37,18 +44,18 @@ function Conference(props) {
             <SiJavascript />
           </div>
         </div>
-        <div className={isShow ? "attend__edit__div" : "cancel__div"}>
+        {logContext.logged && <div className={id === getUser().username ? "cancel__div" : "attend__edit__div"}>
           <Link>
             <div className="edit__div">
-              {isShow ? <BiEdit /> : <FcCancel />}
-              <p className="edit__p">{isShow ? "Edit" : "Cancel Conference"}</p>
+              {id === getUser().username ? <BiEdit /> : null}
+              <p className="edit__p">{id === getUser().username ? "Edit" : `Author: ${id ? id : "Unknown"}`}</p>
             </div>
           </Link>
 
-          <Link to="/id" className={isShow ? "" : "hide__link"}>
-            <div className="btn">Attend +</div>
-          </Link>
-        </div>
+          <form onSubmit={attendUpdate} className={id === getUser().username ? "hide__link" : "" }>
+            <input className="btn btn__input" type="submit" value="Attend +" />
+          </form>
+        </div>}
       </div>
     </div>
   );

@@ -1,8 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import "./singlePage.css"
 import { useParams } from 'react-router-dom'
-import { conferenceData } from '../../conferenceData';
-import { userData } from '../../userData';
 import noImg from "../../assets/noImg.jpg"
 import {SiJavascript} from "react-icons/si"
 import {FaUser} from "react-icons/fa"
@@ -10,12 +8,20 @@ import {BsCalendar3} from "react-icons/bs"
 import {BsFillClockFill} from "react-icons/bs"
 import {BiMessage} from "react-icons/bi"
 import { Link } from 'react-router-dom';
+import { LoggedContext } from '../../AuthContext';
+import { DataContext } from '../../DataContext';
 
 function SinglePage() {
+
     const ParamObj = useParams();
-    const id = ParamObj.id;
-    const confArr = conferenceData.filter(obj=>obj.id==id);
-    const {name, date, time, endDate, desc, creator} = confArr[0];
+    const nameC = ParamObj.name;
+    const confArrS = useContext(DataContext).conferences;
+    const userData = useContext(DataContext).users;
+    if(!confArrS || !userData) return <div>loading...</div>
+    const confArr = confArrS.filter(obj=>obj.name===nameC);
+    const {name, startDate, startTime, endDate, description, author_id, attenders} = confArr[0];
+    const isLogged = useContext(LoggedContext).logged;
+    
     
   return (
     <section className='container'>
@@ -28,7 +34,7 @@ function SinglePage() {
             <BsCalendar3 />
             <p className='p__bold'>Start Date:</p>
           </div>
-            <p>{date}</p>
+            <p>{startDate}</p>
 
             <div className='icon__name__div'> 
             <BsCalendar3 />
@@ -40,19 +46,19 @@ function SinglePage() {
             <BsFillClockFill />
             <p className='p__bold'>Time:</p>
           </div>
-            <p>{time}</p>
+            <p>{startTime}</p>
 
             <div className='icon__name__div'>
             <FaUser />
             <p className='p__bold'>Creator:</p>
           </div>
-            <p>{creator}</p>
+            <p>{author_id}</p>
 
             <div className='icon__name__div'>
             <BiMessage />
             <p className='p__bold'>Description:</p>
           </div>
-            <p>{desc}</p>
+            <p>{description}</p>
         </div>
 
         <div className='tec__div'>
@@ -63,18 +69,18 @@ function SinglePage() {
                 <SiJavascript />
             </div>
             </div>
-            <Link to='/id'>
+            {isLogged && <Link to='/id'>
             <div className='btn single__btn'>Attend +</div>
-            </Link>
+            </Link>}
         </div>
       </div>
       <div className='users__div'>
         <h2 className='title__single__h2'>Attenders:</h2>
       </div>
       <div className='user__names__div'>
-        {userData.map(obj=>{
+        {userData.map((obj,i)=>{
             return (
-            <div className='single__user'>
+            <div className='single__user' key={i}>
                 <FaUser />
                 <p>{obj.name}</p>
             </div>

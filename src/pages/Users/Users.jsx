@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import User from "../../components/User.jsx";
-import { userData } from "../../userData.js";
 import Sketch from "../../assets/sketch.png";
 import "./Users.css";
 import { createPortal } from "react-dom";
@@ -14,31 +13,26 @@ import {
 } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { BiRun } from "react-icons/bi";
+import { DataContext } from "../../DataContext.jsx";
 
 function Users() {
   const [openUserDetails, setOpenUserDetails] = useState(false);
+  const [eventHandle, setEventHandle] = useState('');
+  const userData = useContext(DataContext).users;
+  if(!userData) return <div>Loading...</div>
 
   return (
     <section className="container">
       <UserDetails
         openModal={openUserDetails}
         setOpenModal={setOpenUserDetails}
+        info={eventHandle}
       />
       <h2>Users</h2>
       <div className="users__container">
         <div className="user__info__container">
           {userData.map((obj, i) => {
-            return (
-              <User
-                key={i}
-                id={obj.id}
-                name={obj.name}
-                desc={obj.desc}
-                dep={obj.dep}
-                del={obj.del}
-                setOpenUserDetails={setOpenUserDetails}
-              />
-            );
+            return <User key={i} id={i} name={obj.name} title={obj.title} dep={obj.department} del={obj.deployment} attends={obj.attends} setOpenUserDetails={setOpenUserDetails} info={setEventHandle}/>
           })}
         </div>
         <div className="pic__container">
@@ -56,7 +50,8 @@ function Users() {
 
 export default Users;
 
-export function UserDetails({ openModal, setOpenModal }) {
+export function UserDetails({ openModal, setOpenModal, info}) {
+
   return createPortal(
     <>
       <>
@@ -89,7 +84,7 @@ export function UserDetails({ openModal, setOpenModal }) {
                 </span>
               </div>
               <p className="font-semibold text-[--accent-color] text-2xl">
-                Petar Petrovic
+                {info.name}
               </p>
             </div>
             <div className="mb-5 lg:mb-0">
@@ -100,7 +95,7 @@ export function UserDetails({ openModal, setOpenModal }) {
                 </span>
               </div>
               <p className="font-semibold text-[--accent-color] text-2xl">
-                Full-stack developer
+                {info.title}
               </p>
             </div>
             <div className="mb-5 lg:mb-0">
@@ -111,7 +106,7 @@ export function UserDetails({ openModal, setOpenModal }) {
                 </span>
               </div>
               <p className="font-semibold text-[--accent-color] text-2xl">
-                JavaScript
+                {info.dep}
               </p>
             </div>
             <div className="mb-5 lg:mb-0">
@@ -122,7 +117,7 @@ export function UserDetails({ openModal, setOpenModal }) {
                 </span>
               </div>
               <p className="font-semibold text-[--accent-color] text-2xl">
-                Java 2
+                {info.del}
               </p>
             </div>
           </div>
