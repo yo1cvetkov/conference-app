@@ -24,8 +24,6 @@ export default function Navbar() {
     });
   }, []);
 
-  console.log(user);
-
   return (
     <>
       <SignupModal

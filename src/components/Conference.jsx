@@ -16,7 +16,7 @@ function Conference({
   date,
   startTime,
   endTime,
-  isShow,
+  isInMyEvents,
   technologies,
   creatorId,
 }) {
@@ -89,9 +89,8 @@ function Conference({
         </div>
         <div
           className={`${
-            isShow
-              ? "flex flex-row items-center lg:flex-col lg:items-start gap-4"
-              : "grid place-items-center"
+            "flex flex-row items-center lg:flex-col lg:items-start gap-4" +
+            "grid place-items-center"
           } mt-10 lg:mt-0`}
         >
           {authed && isCreator ? (
@@ -103,10 +102,16 @@ function Conference({
             </Link>
           ) : null}
 
-          {authed ? (
+          {authed && !isInMyEvents ? (
             <button className="mx-auto  flex items-center gap-3 py-3 px-6 bg-[--accent-color] rounded-2xl hover:bg-[--accent-color-light] transition-all duration-150">
               <HiPlus className="text-white" />
               <span className="text-lg font-semibold text-white">Attend</span>
+            </button>
+          ) : null}
+          {isInMyEvents ? (
+            <button className="flex items-center gap-2 ring-1 transition-all duration-200 hover:bg-[--color-gray-light-transparent] ring-[--color-gray-light-transparent] rounded-xl py-2 px-4 ">
+              <FcCancel className="text-lg" />
+              <span className="text-red-500">Cancel conference</span>
             </button>
           ) : null}
         </div>

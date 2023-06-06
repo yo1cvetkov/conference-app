@@ -56,7 +56,7 @@ export default function Events() {
                   startTime={conference.startTime}
                   endTime={conference.endTime}
                   technologies={conference.technologies}
-                  isShow={true}
+                  isInMyEvents={false}
                   creatorId={conference.creatorId}
                 />
               );

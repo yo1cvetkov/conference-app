@@ -2,9 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Events from "./pages/Events/Events.jsx";
 import MyEvents from "./pages/MyEvents/MyEvents.jsx";
 import Users from "./pages/Users/Users.jsx";
-import SinglePage from "./pages/SinglePage/SinglePage";
 import RootLayout from "./layout/RootLayout";
-import SimplePage from "./pages/SinglePage/SimplePage.jsx";
+import SingleConference from "./pages/SingleConference/SingleConference.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,13 +23,8 @@ const router = createBrowserRouter([
         element: <Users />,
       },
       {
-        path: "/conference",
-        children: [
-          {
-            path: "/conference/:id",
-            element: <SimplePage />,
-          },
-        ],
+        path: "/conference/:id",
+        element: <SingleConference />,
       },
     ],
   },
