@@ -5,9 +5,9 @@ import './index.css'
 import DataProvider from './DataContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <>
+  <React.StrictMode>
     <DataProvider>
     <App />
     </DataProvider>
-  </>,
+  </React.StrictMode>,
 )

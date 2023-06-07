@@ -1,25 +1,35 @@
 import "./conference.css";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState} from "react";
 import { LoggedContext } from "../AuthContext";
 import { Link } from "react-router-dom";
 import noImg from "../assets/noImg.jpg";
 import { SiJavascript } from "react-icons/si";
 import { BiEdit } from "react-icons/bi";
 import { BsCalendar3,  BsFillClockFill } from "react-icons/bs";
-import { FcCancel } from "react-icons/fc";
 import { getUser } from "../service/AuthService";
+import { DataContext } from "../DataContext";
+import EditModal from "./EditModal";
 
 
 
 function Conference(props) {
-  const { name, date, time, id, attenders } = props;
+  const { name, startDate, endDate, startTime, endTime, description ,id, attenders} = props;
+  const [attendState, setAttendState] = useState(attenders);
+  const [showNewEdit, setShowNewEdit] = useState(false);
   const logContext = useContext(LoggedContext);
-  const attendUpdate = () => {
+  const attendConf = useContext(DataContext).attendToConference;
+  let user;
+  logContext.logged ? user = getUser().name : "";
 
+  const attendUpdate = (event) => {
+    event.preventDefault();
+    setAttendState(oldVal => oldVal.includes(user) ? oldVal.filter(it => it !== user) : [...oldVal, user]);
+    attendConf(name, attendState);
   } 
 
   return (
     <div className="conference__main__div">
+      <EditModal open={showNewEdit} setOpen={setShowNewEdit} name={name} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} description={description}/>
       <div className="left__div">
         <img className="no__img" src={noImg} alt="no_image" />
         <div className="info__div">
@@ -28,11 +38,11 @@ function Conference(props) {
           </Link>
           <div className="icon__name__div">
             <BsCalendar3 />
-            <p className="p__bold">{date}</p>
+            <p className="p__bold">{startDate}</p>
           </div>
           <div className="icon__name__div">
             <BsFillClockFill />
-            <p className="p__bold">{time}</p>
+            <p className="p__bold">{startTime}</p>
           </div>
         </div>
       </div>
@@ -44,16 +54,16 @@ function Conference(props) {
             <SiJavascript />
           </div>
         </div>
-        {logContext.logged && <div className={id === getUser().username ? "cancel__div" : "attend__edit__div"}>
-          <Link>
+        {logContext.logged && <div className="attend__edit__div">
             <div className="edit__div">
-              {id === getUser().username ? <BiEdit /> : null}
-              <p className="edit__p">{id === getUser().username ? "Edit" : `Author: ${id ? id : "Unknown"}`}</p>
+              <div className="edit__div__sm">
+              {id === user ? <BiEdit  onClick={()=> setShowNewEdit(old => !old)}/> : <p className="edit__p">{`Author: ${id}`}</p>}
+              {id === user && <p className="edit__p"  onClick={()=> setShowNewEdit(old => !old)}>Edit</p>}
+              </div>
             </div>
-          </Link>
 
-          <form onSubmit={attendUpdate} className={id === getUser().username ? "hide__link" : "" }>
-            <input className="btn btn__input" type="submit" value="Attend +" />
+          <form onSubmit={attendUpdate}>
+            <input className="btn btn__input" type="submit" value={attendState.includes(user) ? "Cancel -" : "Attend +"} />
           </form>
         </div>}
       </div>

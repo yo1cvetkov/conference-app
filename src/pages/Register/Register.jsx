@@ -17,7 +17,7 @@ function Register() {
     const submitHandler = (event) => {
         event.preventDefault();
         if(username.trim('') === '' || password.trim('') === '' || name.trim('') === "" || email.trim('') === ""){
-            setMessage("All fields are required");
+            setMessage("All fields required");
             return;
         }
 

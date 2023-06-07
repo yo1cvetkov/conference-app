@@ -57,6 +57,7 @@
   flex-direction: column;
   height: 100%;
   gap: 1rem;
+  align-items: flex-end;
 }
 
 .cancel__div{
@@ -66,9 +67,15 @@
 
 .edit__div {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
   gap: 0.2rem;
+}
+.edit__div__sm{
+  display: flex
+}
+.edit__div__sm:hover{
+  cursor: pointer;
 }
 .edit__p {
   color: var(--color-gray-dark);

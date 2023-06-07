@@ -4,11 +4,8 @@ import Conference from "../../components/Conference.jsx";
 import { HiPlus } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
 import Sketch from "../../assets/sketch.png";
-import axios from "axios";
-import {getUser} from "../../service/AuthService";
 import { LoggedContext } from "../../AuthContext";
 import { DataContext } from "../../DataContext";
-
 
 const dummyTechnologies = [
   {
@@ -42,7 +39,7 @@ function Events() {
             <p className="sort__btn">&#8595; Most recent</p>
           </div>
           {confArr.map((obj, i) => {
-            return <Conference key={i} id={obj.author_id} name={obj.name} date={obj.startDate} time={obj.startTime} attenders={obj.attenders} />
+            return <Conference key={i} id={obj.author_id} name={obj.name} startDate={obj.startDate} endDate={obj.endDate} startTime={obj.startTime} endTime={obj.endTime} description={obj.description} attenders={obj.attenders}/>
           })}
         </div>
         <div className="add__container">
@@ -79,6 +76,7 @@ export function AddConfModal({ open, setOpen }) {
   const [technologies, setTechnologies] = useState([]);
   const [message, setMessage] = useState(null);
   const isLogged = useContext(LoggedContext).logged;
+  const createConference = useContext(DataContext).createConference;
   if(!isLogged) setOpen(false);
 
   const handleCheck = (event) => {
@@ -87,39 +85,8 @@ export function AddConfModal({ open, setOpen }) {
 
   const createHandler = (event) => {
     event.preventDefault();
-        if(name.trim('') === "" || startDate.trim('') === "" || endDate.trim('') === "" || startTime.trim('') === "" || endTime.trim('') === "" || url.trim('') === ""){
-            setMessage("All fields are required");
-            return;
-        }
-
-        const requestConfig = {
-          headers: {
-              'x-api-key': 'qCN51M0Zbs5FRo0r8IdHt90raGmJYSlP3FUsX1jo'
-          }
-      }
-
-        const requestBody = {
-            name: name,
-            author_id: getUser().username,
-            startDate: startDate,
-            endDate: endDate,
-            startTime: startTime,
-            endTime: endTime,
-            url: url,
-            description: description,
-            technologies: technologies
-        }
-
-        axios.post(crudURL, requestBody, requestConfig).then(response => {
-            setMessage("Konferencija kreirana!");
-        }).catch(error => {
-            if(error.response.status === 401) {
-                setMessage(error.response.data.message);
-            }else{
-                setMessage('sorry backend failed')
-            }
-        })
-
+        createConference(name, startDate, endDate, startTime, endTime, url, description, technologies, setMessage);
+        setName('');setStartDate('');setEndDate('');setStartTime('');setEndTime('');setUrl('');setDescription('');setTechnologies([]);
     }
 
 

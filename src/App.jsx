@@ -10,8 +10,7 @@ import LoggedProvider from './AuthContext'
 import { DataContext } from './DataContext'
 
 function App() {
-  const { fetchConferences, fetchUsers, users } = useContext(DataContext);
-  console.log(users);
+  const { fetchConferences, fetchUsers} = useContext(DataContext);
   useEffect(() => {
     fetchConferences();
     fetchUsers();

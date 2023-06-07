@@ -8,7 +8,7 @@ import { DataContext } from '../../DataContext.jsx'
 function MyEvents() {
   const confArray = useContext(DataContext).conferences;
   if(!confArray) return <div>loading...</div>
-  const confArr = confArray.filter(obj=>obj.author_id === getUser().username);
+  const confArr = confArray.filter(obj=>obj.author_id === getUser().name);
   
   return (
     <section className='container'>
@@ -16,7 +16,7 @@ function MyEvents() {
       <div className='my__events__container'>
       {confArr.length > 0 ? <div className='conference__container'>
         {confArr.map((obj,i)=>{
-          return <Conference key={i} id={obj.author_id} name={obj.name} date={obj.startDate} time={obj.startTime} />
+          return <Conference key={i} id={obj.author_id} name={obj.name} startDate={obj.startDate} endDate={obj.endDate} startTime={obj.startTime} endTime={obj.endTime} description={obj.description} attenders={obj.attenders}/>
         })}
       </div> : <h2 className='title__h2'>YOU HAVEN'T CREATED ANY CONFERENCE YET.</h2>}
       <div className='my__add__container'>
