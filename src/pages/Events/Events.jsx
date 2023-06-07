@@ -6,21 +6,7 @@ import { MdClose } from "react-icons/md";
 import Sketch from "../../assets/sketch.png";
 import { LoggedContext } from "../../AuthContext";
 import { DataContext } from "../../DataContext";
-
-const dummyTechnologies = [
-  {
-    id: 1,
-    title: "JavaScript",
-  },
-  {
-    id: 2,
-    title: "Python",
-  },
-  {
-    id: 3,
-    title: "Docker",
-  },
-];
+import { dummyTechnologies } from "../../technologiesData";
 
 function Events() {
   const [showNewConf, setShowNewConf] = useState(false);
