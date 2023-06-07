@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Conference from "../../components/Conference.jsx";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Sketch from "../../assets/sketch.png";
 import { AuthCtx } from "../../context/AuthCtx.jsx";
 import { getMyEvents } from "../../utils/getMyEvents.js";
@@ -12,10 +12,9 @@ function MyEvents() {
 
   const { id } = useParams();
 
-  const myEventsQuery = useQuery({
-    queryKey: ["my-events", id],
-    queryFn: () => getMyEvents(id),
-  });
+  const queryClient = useQueryClient();
+
+  const myEvents = queryClient.getQueryData(["my-events", id]);
 
   return (
     <section className="container my-40">
@@ -28,26 +27,26 @@ function MyEvents() {
             <div className="text-xl text-[--color-gray-medium] font-semibold">
               You are not logged in
             </div>
-          ) : authed ? (
-            myEventsQuery.isLoading && myEventsQuery.isFetching ? (
-              <Skeleton count={10} className="h-28 rounded-xl w-full mb-5" />
-            ) : (
-              myEventsQuery.data?.map((conference) => {
-                return (
-                  <Conference
-                    key={conference.id}
-                    id={conference.id}
-                    name={conference.confTitle}
-                    date={conference.startDate}
-                    startTime={conference.startTime}
-                    endTime={conference.endTime}
-                    technologies={conference.technologies}
-                    isInMyEvents={true}
-                    creatorId={conference.creatorId}
-                  />
-                );
-              })
-            )
+          ) : authed && myEvents ? (
+            // myEventsQuery.isLoading && myEventsQuery.isFetching ? (
+            //   <Skeleton count={10} className="h-28 rounded-xl w-full mb-5" />
+            // ) : (
+            myEvents.map((conference) => {
+              if (conference.startTime === "") return;
+              return (
+                <Conference
+                  key={conference.id}
+                  id={conference.id}
+                  name={conference.confTitle}
+                  date={conference.startDate}
+                  startTime={conference.startTime}
+                  endTime={conference.endTime}
+                  technologies={conference.technologies}
+                  isInMyEvents={true}
+                  creatorId={conference.creatorId}
+                />
+              );
+            })
           ) : null}
         </div>
         <div>
