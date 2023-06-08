@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
 import Conference from "../../components/Conference.jsx";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Sketch from "../../assets/sketch.png";
 import { AuthCtx } from "../../context/AuthCtx.jsx";
-import { getMyEvents } from "../../utils/getMyEvents.js";
 import { useParams } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
 
 function MyEvents() {
   const { user, authed } = useContext(AuthCtx);
@@ -28,9 +26,6 @@ function MyEvents() {
               You are not logged in
             </div>
           ) : authed && myEvents ? (
-            // myEventsQuery.isLoading && myEventsQuery.isFetching ? (
-            //   <Skeleton count={10} className="h-28 rounded-xl w-full mb-5" />
-            // ) : (
             myEvents.map((conference) => {
               if (conference.startTime === "") return;
               return (
@@ -38,7 +33,7 @@ function MyEvents() {
                   key={conference.id}
                   id={conference.id}
                   name={conference.confTitle}
-                  date={conference.startDate}
+                  startDate={conference.startDate}
                   startTime={conference.startTime}
                   endTime={conference.endTime}
                   technologies={conference.technologies}

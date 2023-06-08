@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { v4 as uuid } from "uuid";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import Conference from "../../components/Conference.jsx";
+import Conference, { EditConfModal } from "../../components/Conference.jsx";
 import { HiPlus } from "react-icons/hi";
 import { MdArrowDownward, MdClose } from "react-icons/md";
 import Sketch from "../../assets/sketch.png";
@@ -20,12 +20,36 @@ const technologies = mappedTechnologies.map(
 
 export default function Events() {
   const [showNewConf, setShowNewConf] = useState(false);
+  const [showEditConf, setShowEditConf] = useState(false);
+  const [sorted, setSorted] = useState(false);
   const { authed } = useContext(AuthCtx);
 
   const conferencesQuery = useQuery({
     queryKey: ["conferences"],
     queryFn: getConferences,
   });
+
+  const sortedConfs =
+    conferencesQuery.data &&
+    conferencesQuery.data
+      .map((conf) => {
+        return { ...conf, startDate: new Date(conf.startDate) };
+      })
+      .sort((a, b) => {
+        if (a.startDate.getTime() - b.startDate.getTime() === 0) {
+          return (
+            parseInt(a.startTime.slice(0, 2)) -
+            parseInt(b.startTime.slice(0, 2))
+          );
+        } else {
+          return a.startDate - b.startDate;
+        }
+      });
+
+  // console.log(conferencesQuery.data);
+  // console.log(sortedConfs);
+
+  // console.log(sorted);
 
   return (
     <section className="my-40">
@@ -36,31 +60,65 @@ export default function Events() {
             <h2 className="font-bold text-xl sm:text-2xl lg:text-3xl">
               Upcoming Events
             </h2>
-            <button className="hover:text-[--accent-color-light] flex items-center gap-1 text-[--accent-color] transition-all duration-200">
+            <button
+              onClick={() => setSorted((prev) => !prev)}
+              className="hover:text-[--accent-color-light] flex items-center gap-1 text-[--accent-color] transition-all duration-200"
+            >
               <MdArrowDownward className="text-sm lg:text-lg" />
               <span className="text-sm md:text-md lg:text-lg font-medium">
                 Most recent
               </span>
             </button>
           </div>
-          {conferencesQuery.isLoading ? (
-            <Skeleton count={10} className="h-28 rounded-xl w-full mb-5" />
+          {!sorted ? (
+            conferencesQuery.isLoading ? (
+              <Skeleton count={10} className="h-28 rounded-xl w-full mb-5" />
+            ) : (
+              conferencesQuery.data.map((conference) => {
+                return (
+                  <>
+                    <Conference
+                      key={conference.id}
+                      id={conference.id}
+                      name={conference.title}
+                      startDate={conference.startDate}
+                      endDate={conference.endDate}
+                      startTime={conference.startTime}
+                      endTime={conference.endTime}
+                      url={conference.url}
+                      description={conference.description}
+                      technologies={conference.technologies}
+                      isInMyEvents={false}
+                      creatorId={conference.creatorId}
+                      setShowEditConf={setShowEditConf}
+                      showEditConf={showEditConf}
+                      sorted={sorted}
+                    />
+                  </>
+                );
+              })
+            )
           ) : (
-            conferencesQuery.data.map((conference) => {
-              return (
-                <Conference
-                  key={conference.id}
-                  id={conference.id}
-                  name={conference.title}
-                  date={conference.startDate}
-                  startTime={conference.startTime}
-                  endTime={conference.endTime}
-                  technologies={conference.technologies}
-                  isInMyEvents={false}
-                  creatorId={conference.creatorId}
-                />
-              );
-            })
+            sortedConfs &&
+            sortedConfs.map((conference) => (
+              <Conference
+                key={conference.id}
+                id={conference.id}
+                name={conference.title}
+                startDate={conference.startDate}
+                endDate={conference.endDate}
+                startTime={conference.startTime}
+                endTime={conference.endTime}
+                url={conference.url}
+                description={conference.description}
+                technologies={conference.technologies}
+                isInMyEvents={false}
+                creatorId={conference.creatorId}
+                setShowEditConf={setShowEditConf}
+                showEditConf={showEditConf}
+                sorted={sorted}
+              />
+            ))
           )}
         </div>
         <div className="flex flex-col items-center gap-8 mt-16">

@@ -3,7 +3,7 @@ import noImg from "../../assets/noImg.jpg";
 import { FaUser } from "react-icons/fa";
 import { BsCalendar3 } from "react-icons/bs";
 import { BsFillClockFill } from "react-icons/bs";
-import { BiMessage } from "react-icons/bi";
+import { BiEdit, BiMessage } from "react-icons/bi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getSingleConference } from "../../utils/getSingleConference";
 import { technologiesData } from "../../utils/technologiesData";
@@ -13,10 +13,13 @@ import { format } from "date-fns";
 import { useContext, useState } from "react";
 import { AuthCtx } from "../../context/AuthCtx";
 import { attendConference } from "../../utils/attendConference";
-import { getMyEvents } from "../../utils/getMyEvents";
 import { cancelAttendance } from "../../utils/cancelAttendance";
+import { FcCancel } from "react-icons/fc";
+import { EditConfModal } from "../../components/Conference";
 
 export default function SingleConference() {
+  const [showEditConf, setShowEditConf] = useState(false);
+
   const { id } = useParams();
   const queryClient = useQueryClient();
   const { user, authed } = useContext(AuthCtx);
@@ -26,23 +29,12 @@ export default function SingleConference() {
     queryFn: () => getSingleConference(id),
   });
 
-  // console.log(user.sub);
-  // console.log(data);
-
-  // const conferencesData = queryClient.getQueryData(["conferences"]);
-
-  // console.log(conferencesData);
-
   const userId = user && user.sub;
-
-  console.log(userId);
 
   const myEvents = queryClient.getQueryData(["my-events", userId]);
 
-  console.log(myEvents);
-
   const isAttending =
-    data && data.attenders.find((attender) => attender.id === user.sub)
+    data && user && data.attenders.find((attender) => attender.id === user.sub)
       ? true
       : false;
 
@@ -65,10 +57,6 @@ export default function SingleConference() {
       myEvents: myEvents.filter((event) => event.id !== id),
     };
 
-  console.log(cancelBody);
-
-  // console.log(isAttending);
-
   const userBody = user &&
     data && {
       userId: user.sub,
@@ -87,11 +75,18 @@ export default function SingleConference() {
 
   const attendMutation = useMutation({
     mutationFn: () => attendConference(id, userBody),
+    onSuccess: () => {
+      queryClient.invalidateQueries("conference", id);
+      queryClient.invalidateQueries("my-events", userId);
+    },
   });
 
   const cancelMutation = useMutation({
     mutationFn: () => cancelAttendance(id, cancelBody),
-    onSuccess: () => queryClient.invalidateQueries("conference", id),
+    onSuccess: () => {
+      queryClient.invalidateQueries("conference", id);
+      queryClient.invalidateQueries("my-events", userId);
+    },
   });
 
   let filteredTechnologies = [];
@@ -118,7 +113,7 @@ export default function SingleConference() {
   if (data) {
     const splittedDate = data.startDate.split("-");
     const year = splittedDate[0];
-    const month = splittedDate[1];
+    const month = splittedDate[1] - 1;
     const day = splittedDate[2];
 
     const newDate = new Date(year, month, day);
@@ -126,15 +121,31 @@ export default function SingleConference() {
 
     const splittedEndDate = data.endDate.split("-");
     const endYear = splittedEndDate[0];
-    const endMonth = splittedEndDate[1];
+    const endMonth = splittedEndDate[1] - 1;
     const endDay = splittedDate[2];
 
     const newEndDate = new Date(endYear, endMonth, endDay);
     formattedEndDate = format(newEndDate, "dd MMMM yyyy");
   }
 
+  const isCreator = user?.sub === data?.creatorId ? true : false;
+
   return (
     <section className="container my-40">
+      {data && (
+        <EditConfModal
+          confTitle={data.title}
+          startDate={data.startDate}
+          endDate={data.endDate}
+          startTime={data.startTime}
+          endTime={data.endTime}
+          url={data.url}
+          description={data.description}
+          technologies={data.technologies}
+          open={showEditConf}
+          setOpen={setShowEditConf}
+        />
+      )}
       {isLoading ? (
         <div className="grid grid-cols-3 gap-10 mt-20">
           <Skeleton className="col-start-1 col-end-2 h-72" />
@@ -214,22 +225,40 @@ export default function SingleConference() {
                   ))}
                 </div>
               </div>
-
-              {isAttending ? (
-                <button onClick={cancelMutation.mutate}>
-                  Already attending
-                </button>
-              ) : (
+              {authed && isCreator ? (
                 <button
-                  onClick={attendMutation.mutate}
-                  className="self-center flex items-center justify-self-center px-4 py-2 rounded-lg gap-6 bg-[--accent-color]"
+                  onClick={() => setShowEditConf(true)}
+                  className="flex items-center self-center justify-self-center gap-4 text-[--color-gray-dark]"
                 >
-                  <HiPlus className="text-white" />
-                  <span className="text-lg font-semibold text-white">
-                    Attend
-                  </span>
+                  <BiEdit className="text-xl" />
+                  <p className="text-xl font-semibold">Edit</p>
                 </button>
-              )}
+              ) : null}
+              {authed ? (
+                isAttending ? (
+                  <button
+                    className="flex items-center self-center justify-self-center px-4 py-2 rounded-lg gap-6 ring-1 ring-[--color-gray-light-transparent] transition-all duration-200 hover:bg-[--color-gray-light-transparent]"
+                    onClick={cancelMutation.mutate}
+                  >
+                    <FcCancel className="text-xl" />
+                    <span className="text-lg">
+                      {cancelMutation.isLoading
+                        ? "Cancelling..."
+                        : "Cancel attendance"}
+                    </span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={attendMutation.mutate}
+                    className="self-center flex items-center justify-self-center px-4 py-2 rounded-lg gap-6 bg-[--accent-color]"
+                  >
+                    <HiPlus className="text-white" />
+                    <span className="text-lg font-semibold text-white">
+                      {attendMutation.isLoading ? "Attending..." : "Attend"}
+                    </span>
+                  </button>
+                )
+              ) : null}
             </div>
           </div>
           <div className="mt-5">
@@ -238,7 +267,7 @@ export default function SingleConference() {
             </h2>
           </div>
           <div className="flex gap-8 items-center mt-10">
-            {data.attenders ? (
+            {data.attenders &&
               data.attenders.map((attender) => {
                 if (attender.name) {
                   return (
@@ -251,12 +280,7 @@ export default function SingleConference() {
                     </div>
                   );
                 }
-              })
-            ) : (
-              <p className="text-center text-lg mt-12 mx-auto text-[--color-gray-medium]">
-                There are no attenders for this event
-              </p>
-            )}
+              })}
           </div>
         </>
       )}

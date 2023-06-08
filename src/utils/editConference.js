@@ -1,6 +1,6 @@
-export async function cancelAttendance(id, body) {
+export async function editConference(id, body) {
   const res = await fetch(
-    `https://ek5vkt4dxb.execute-api.eu-central-1.amazonaws.com/dev/my-events/${id}`,
+    `https://ek5vkt4dxb.execute-api.eu-central-1.amazonaws.com/dev/conference/${id}/edit`,
     {
       method: "PATCH",
       headers: {
@@ -9,4 +9,6 @@ export async function cancelAttendance(id, body) {
       body: JSON.stringify(body),
     }
   );
+
+  console.log(res);
 }

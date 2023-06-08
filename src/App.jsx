@@ -44,8 +44,6 @@ function App({ children }) {
     queryFn: () => getMyEvents(id),
   });
 
-  console.log(myEventsQuery.data);
-
   return (
     <>
       <RouterProvider router={router}>{children}</RouterProvider>

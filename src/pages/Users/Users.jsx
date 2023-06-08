@@ -63,6 +63,7 @@ export function UserDetails({
   title,
   department,
   deliveryUnit,
+  myEvents,
 }) {
   return createPortal(
     <>
@@ -138,28 +139,22 @@ export function UserDetails({
             Attends
           </div>
           <ul className="mt-5">
-            <li className="mb-5">
-              <Link
-                className="text-xl lg:text-2xl flex gap-2 items-center text-[--accent-color]"
-                to="/"
-              >
-                <MdArrowForward />
-                <span className="hover:translate-x-4 hover:text-[--accent-color-light] transition-all duration-200">
-                  NodeJS Conference
-                </span>
-              </Link>
-            </li>
-            <li className="mb-5">
-              <Link
-                className="text-xl lg:text-2xl flex gap-2  items-center text-[--accent-color]"
-                to="/"
-              >
-                <MdArrowForward />
-                <span className="hover:translate-x-4 hover:text-[--accent-color-light] transition-all duration-200">
-                  Serverless AWS Conf
-                </span>
-              </Link>
-            </li>
+            {myEvents.map(
+              (event) =>
+                event.confTitle && (
+                  <li key={event.id} className="mb-5">
+                    <Link
+                      className="text-xl lg:text-2xl flex gap-2 items-center text-[--accent-color]"
+                      to="/"
+                    >
+                      <MdArrowForward />
+                      <span className="hover:translate-x-4 hover:text-[--accent-color-light] transition-all duration-200">
+                        {event.confTitle}
+                      </span>
+                    </Link>
+                  </li>
+                )
+            )}
           </ul>
         </div>
       </>
