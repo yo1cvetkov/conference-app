@@ -92,8 +92,8 @@ function EditModal({open , setOpen, name, startDate, endDate, startTime, endTime
                   className="input__border overflow-y-scroll placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] rounded-lg px-3 py-1 lg:py-2"
                 />
               </div>
-              <input className="btn btn__input2" type="submit" value="EDIT EVENT" />
-              {message}
+              <input className="btn btn__input2 mt-8 mx-auto mb-8" type="submit" value="EDIT EVENT" />
+              <div className='text-2xl'>{message}</div>
             </form>
           </div>
         </>

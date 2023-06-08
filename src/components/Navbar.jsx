@@ -11,8 +11,6 @@ import {getUser} from "../service/AuthService";
 import { LoggedContext } from "../AuthContext";
 
 
-
-
 export default function Navbar() {
   const [isNavShowing, setIsNavShowing] = useState(false);
   const [openModal, setOpenModal] = useState(false);

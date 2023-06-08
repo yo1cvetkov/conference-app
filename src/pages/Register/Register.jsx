@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import "./register.css"
+import { LoggedContext } from '../../AuthContext';
 
 function Register() {
-    const registerUrl = 'https://a7wght99zk.execute-api.eu-central-1.amazonaws.com/test/register'
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -13,43 +13,11 @@ function Register() {
     const [deployment, setDeployment] = useState('');
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState(null);
+    const registerUser = useContext(LoggedContext).registerUser
 
     const submitHandler = (event) => {
         event.preventDefault();
-        if(username.trim('') === '' || password.trim('') === '' || name.trim('') === "" || email.trim('') === ""){
-            setMessage("All fields required");
-            return;
-        }
-
-        const requestConfig = {
-            headers: {
-                'x-api-key': 'qCN51M0Zbs5FRo0r8IdHt90raGmJYSlP3FUsX1jo'
-            }
-        }
-
-        const requestBody = {
-            username: username,
-            email: email,
-            name: name,
-            password: password,
-            department: department,
-            deployment: deployment,
-            title: title
-        }
-
-        axios.post(registerUrl, requestBody, requestConfig).then(response => {
-            setMessage("Uspesno ste se registrovali!");
-            setTimeout(()=>{
-                setMessage(null)
-            }, 1500);
-        }).catch(error => {
-            if(error.response.status === 401) {
-                setMessage(error.response.data.message);
-            }else{
-                setMessage('sorry backend failed')
-            }
-        }).finally(console.log(event.path))
-
+        registerUser(username,email,name,password,department,deployment,title, setMessage);
     }
 
   return (
@@ -62,8 +30,20 @@ function Register() {
             <div className='input__div'><p>Email:</p><input type="text" value={email} onChange={event => setEmail(event.target.value)}/></div>
             <div className='input__div'><p>Username:</p><input type="text" value={username} onChange={event => setUsername(event.target.value)}/></div>
             <div className='input__div'><p>Password:</p><input type="password" value={password} onChange={event => setPassword(event.target.value)}/></div>
-            <div className='input__div'><p>Depatment:</p><input type="text" value={department} onChange={event => setDepartment(event.target.value)}/></div>
-            <div className='input__div'><p>Deployment:</p><input type="text" value={deployment} onChange={event => setDeployment(event.target.value)}/></div>
+            <div className='input__div'><label htmlFor="department">Department:</label><select type="text" value={department} onChange={event => setDepartment(event.target.value)}>
+                <option value="">Select department</option>
+                <option value="JavaScript1">JavaScript1</option>
+                <option value="JavaScript2">JavaScript2</option>
+                <option value="Python1">Python1</option>
+                <option value="Java2">Java2</option>
+                </select></div>
+            <div className='input__div'><label htmlFor='deployment'>Deployment:</label><select type="text" value={deployment} onChange={event => setDeployment(event.target.value)}>
+                <option value="">Select deployment</option>
+                <option value="DUO 1">DUO 1</option>
+                <option value="DUO 2">DUO 2</option>
+                <option value="DUO 3">DUO 3</option>
+                <option value="DUO 4">DUO 4</option>
+                </select></div>
             <div className='input__div'><p>Title:</p><input type="text" value={title} onChange={event => setTitle(event.target.value)}/></div>
             <div className='reg__div'><input className='btn btn__input2' type="submit" value="REGISTER" /></div>
         </form>

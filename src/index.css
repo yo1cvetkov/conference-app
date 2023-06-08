@@ -103,6 +103,16 @@ input{
   border-radius: 5px;
   height: 35px;
 }
+
+select{
+  box-shadow: 2px 4px 5px 1px rgba(0, 0, 0, 0.3);
+  background-color: var(--color-white);
+  height: 35px;
+  border-radius: 5px;
+  padding-right: 2.4rem;
+  text-indent: 4px;
+}
+
 .btn {
   width: fit-content;
   height: 42px;
@@ -131,6 +141,9 @@ input{
   cursor: pointer;
   background-color: var(--accent-color-light);
   color: var(--color-white);
+}
+.tech__icon{
+  width: 2rem;
 }
 
 /*=========RESPONSIVE FOR TABLETS=============*/

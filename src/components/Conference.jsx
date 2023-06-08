@@ -3,17 +3,15 @@ import React, { useContext, useState} from "react";
 import { LoggedContext } from "../AuthContext";
 import { Link } from "react-router-dom";
 import noImg from "../assets/noImg.jpg";
-import { SiJavascript } from "react-icons/si";
 import { BiEdit } from "react-icons/bi";
 import { BsCalendar3,  BsFillClockFill } from "react-icons/bs";
 import { getUser } from "../service/AuthService";
 import { DataContext } from "../DataContext";
-import EditModal from "./EditModal";
-
-
+import { technologiesData } from "../technologiesData";
+import EditModal from "../modals/EditModal";
 
 function Conference(props) {
-  const { name, startDate, endDate, startTime, endTime, description ,id, attenders} = props;
+  const { name, startDate, endDate, startTime, endTime, description ,id, technologies, attenders} = props;
   const [attendState, setAttendState] = useState(attenders);
   const [showNewEdit, setShowNewEdit] = useState(false);
   const logContext = useContext(LoggedContext);
@@ -23,8 +21,12 @@ function Conference(props) {
 
   const attendUpdate = (event) => {
     event.preventDefault();
-    setAttendState(oldVal => oldVal.includes(user) ? oldVal.filter(it => it !== user) : [...oldVal, user]);
-    attendConf(name, attendState);
+    setAttendState(oldVal => {
+      const updatedState = oldVal.includes(user) ? Array.from(oldVal).filter(it => it !== user) : [...oldVal, user];
+      attendConf(name, updatedState);
+      return updatedState;
+    });
+    
   } 
 
   return (
@@ -50,8 +52,9 @@ function Conference(props) {
         <div className="tech__div">
           <p className="tech__p">Technologies :</p>
           <div className="icon__div">
-            <SiJavascript />
-            <SiJavascript />
+            {technologiesData.map((obj,i)=>{
+              return technologies.includes(obj.title) ? <img className="tech__icon" src={obj.icon} alt="nema" key={obj.id}/> : null
+            })}
           </div>
         </div>
         {logContext.logged && <div className="attend__edit__div">

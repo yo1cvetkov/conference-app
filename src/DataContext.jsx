@@ -93,7 +93,11 @@ export default function DataProvider({children}){
         }
 
         axios.post(attendURL, requestBody, requestConfig).then(response => {
+            fetchConferences();
             setMessage("Konferencija kreirana!");
+            setTimeout(()=>{
+              setMessage(null)
+          }, 1500);
         }).catch(error => {
             if(error.response.status === 401) {
                 setMessage(error.response.data.message);
@@ -120,7 +124,11 @@ export default function DataProvider({children}){
       }
 
         axios.patch(editURL, requestBody, requestConfig).then((response) => {
-          setMessage("Uspesno ste izmenili konferenciju!")
+          fetchConferences();
+          setMessage("Uspesno ste izmenili konferenciju!");
+          setTimeout(()=>{
+            setMessage(null)
+        }, 1500);
           })
           .catch((error) => {
             console.log(error);
@@ -139,6 +147,7 @@ export default function DataProvider({children}){
       }
 
         axios.patch(attendURL, requestBody, requestConfig).then((response) => {
+          fetchConferences();
           })
           .catch((error) => {
             console.log(error);
