@@ -12,9 +12,9 @@ export const DataContext = createContext({
     setUsers: () => {},
     fetchUsers: () => {},
     attendToConference: () => {},
-    update: false,
     createConference: () => {},
-    editConference: () => {}
+    editConference: () => {},
+    attendConfereceUsers: () => {}
 })
 
 export default function DataProvider({children}){
@@ -24,7 +24,6 @@ export default function DataProvider({children}){
     const editURL = 'https://a7wght99zk.execute-api.eu-central-1.amazonaws.com/test/edit';
     const [conferences, setConferences] = useState(null);
     const [users, setUsers] = useState(null);
-    const [update, setUpdate] = useState(false)
 
     const fetchConferences = () => {
         const requestConfig = {
@@ -135,7 +134,7 @@ export default function DataProvider({children}){
           });
     }
 
-    const attendToConference = (name, attenders) => {
+    const attendToConference = (name, attenders, allConferences, userAttendingConferences) => {
       const requestConfig = {
         headers: {
           'x-api-key': 'qCN51M0Zbs5FRo0r8IdHt90raGmJYSlP3FUsX1jo',
@@ -143,11 +142,32 @@ export default function DataProvider({children}){
       }
       const requestBody = {
         name: name,
-        valueKey: attenders
+        valueKey: attenders,
+        allConferences: allConferences,
+        userAttendingConferences: userAttendingConferences
       }
 
         axios.patch(attendURL, requestBody, requestConfig).then((response) => {
           fetchConferences();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
+
+    const attendConfereceUsers = (user_id, attendedConferences) => {
+      const requestConfig = {
+        headers: {
+          'x-api-key': 'qCN51M0Zbs5FRo0r8IdHt90raGmJYSlP3FUsX1jo',
+        }
+      }
+      const requestBody = {
+        user_id: user_id,
+        valueKey: attendedConferences
+      }
+
+        axios.patch(fetchUsersURL, requestBody, requestConfig).then((response) => {
+          fetchUsers();
           })
           .catch((error) => {
             console.log(error);
@@ -162,9 +182,9 @@ export default function DataProvider({children}){
         setUsers,
         fetchUsers,
         attendToConference,
-        update: update,
         createConference,
-        editConference
+        editConference,
+        attendConfereceUsers
     }
 
 

@@ -12,21 +12,25 @@ import EditModal from "../modals/EditModal";
 
 function Conference(props) {
   const { name, startDate, endDate, startTime, endTime, description ,id, technologies, attenders} = props;
+
+  const isLogged = useContext(LoggedContext).logged;
+  const attendConf = useContext(DataContext).attendToConference; 
+  const conferences = useContext(DataContext).conferences; 
   const [attendState, setAttendState] = useState(attenders);
   const [showNewEdit, setShowNewEdit] = useState(false);
-  const logContext = useContext(LoggedContext);
-  const attendConf = useContext(DataContext).attendToConference;
+
+  
   let user;
-  logContext.logged ? user = getUser().name : "";
+  isLogged ? user = {name: getUser().name, user_id: getUser().user_id, attendedConferences: getUser().attendedConferences} : "";
+  
 
   const attendUpdate = (event) => {
     event.preventDefault();
     setAttendState(oldVal => {
-      const updatedState = oldVal.includes(user) ? Array.from(oldVal).filter(it => it !== user) : [...oldVal, user];
-      attendConf(name, updatedState);
+      const updatedState = oldVal.includes(user.name) ? Array.from(oldVal).filter(it => it !== user.name) : [...oldVal, user.name];
+      attendConf(name, updatedState, conferences, user.attendedConferences);
       return updatedState;
     });
-    
   } 
 
   return (
@@ -52,12 +56,12 @@ function Conference(props) {
         <div className="tech__div">
           <p className="tech__p">Technologies :</p>
           <div className="icon__div">
-            {technologiesData.map((obj,i)=>{
+            {technologiesData.map(obj=>{
               return technologies.includes(obj.title) ? <img className="tech__icon" src={obj.icon} alt="nema" key={obj.id}/> : null
             })}
           </div>
         </div>
-        {logContext.logged && <div className="attend__edit__div">
+        {isLogged && <div className="attend__edit__div">
             <div className="edit__div">
               <div className="edit__div__sm">
               {id === user ? <BiEdit  onClick={()=> setShowNewEdit(old => !old)}/> : <p className="edit__p">{`Author: ${id}`}</p>}
@@ -66,7 +70,7 @@ function Conference(props) {
             </div>
 
           <form onSubmit={attendUpdate}>
-            <input className="btn btn__input" type="submit" value={attendState.includes(user) ? "Cancel -" : "Attend +"} />
+            <input className="btn btn__input" type="submit" value={attendState.includes(user.name) ? "Cancel -" : "Attend +"} />
           </form>
         </div>}
       </div>
