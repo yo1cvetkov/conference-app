@@ -9,4 +9,8 @@ export async function attendConference(id, body) {
       body: JSON.stringify(body),
     }
   );
+
+  const data = res.json();
+
+  return data;
 }

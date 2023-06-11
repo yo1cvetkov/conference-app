@@ -9,6 +9,35 @@ import { IoMdExit } from "react-icons/io";
 import { createPortal } from "react-dom";
 import UserPool from "../aws/UserPool";
 import { AuthCtx, useAuth } from "../context/AuthCtx";
+import { useQuery } from "@tanstack/react-query";
+import { checkIsAdmin } from "../utils/isAdmin";
+import { GrUserAdmin } from "react-icons/gr";
+import { FcKey } from "react-icons/fc";
+import Select from "./ui/Select";
+
+const departmentValues = [
+  {
+    name: "Javascript",
+  },
+  {
+    name: "Testing",
+  },
+  {
+    name: "Batman",
+  },
+];
+
+const deliveryUnitValues = [
+  {
+    name: "JS1",
+  },
+  {
+    name: "JS2",
+  },
+  {
+    name: "JS3",
+  },
+];
 
 export default function Navbar() {
   const [isNavShowing, setIsNavShowing] = useState(false);
@@ -16,13 +45,27 @@ export default function Navbar() {
   const [openSignupModal, setOpenSignupModal] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, authed, setAuthed, getSession, logout } = useAuth();
+  const { user, authed, setAuthed, getSession, logout, admin, setAdmin } =
+    useAuth();
+
+  const id = user && user.sub;
+
+  const adminQuery = useQuery({
+    queryKey: ["users", id, "isAdmin"],
+    queryFn: () => checkIsAdmin(id),
+  });
 
   useEffect(() => {
     getSession().then(() => {
       setAuthed(true);
     });
   }, []);
+
+  useEffect(() => {
+    if (adminQuery.isSuccess) {
+      setAdmin(adminQuery.data);
+    }
+  }, [adminQuery.data]);
 
   return (
     <>
@@ -87,13 +130,16 @@ export default function Navbar() {
           </ul>
           <div className="flex items-center">
             {user ? (
-              <span className="text-white font-semibold mr-6 capitalize">
-                Hi, {user.username || user.name}
-              </span>
+              <>
+                <span className="text-white font-semibold capitalize">
+                  Hi, {user.username || user.name}
+                </span>
+                {admin ? <FcKey className="text-2xl text-white ml-2" /> : null}
+              </>
             ) : null}
             {authed ? (
               <button
-                className="text-[--color-gray-light] lg:ring-1 lg:text-white flex items-center gap-2 rounded-lg py-1 px-2 lg:hover:bg-[--accent-color-dark] transition-all duration-200"
+                className="text-[--color-gray-light] lg:ring-1 ml-6 lg:text-white flex items-center gap-2 rounded-lg py-1 px-2 lg:hover:bg-[--accent-color-dark] transition-all duration-200"
                 onClick={() => logout()}
               >
                 <IoMdExit className="text-3xl lg:text-xl" />
@@ -137,9 +183,8 @@ export function SignupModal({ openModal, setOpenModal }) {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
-  const [department, setDepartment] = useState("");
-  const [deliveryUnit, setDeliveryUnit] = useState("");
-
+  const [department, setDepartment] = useState(departmentValues[0]);
+  const [deliveryUnit, setDeliveryUnit] = useState(deliveryUnitValues[0]);
   const [confirmationCode, setConfirmationCode] = useState("");
   const [showConfirmationForm, setShowConfirmationForm] = useState(false);
 
@@ -161,11 +206,11 @@ export function SignupModal({ openModal, setOpenModal }) {
       },
       {
         Name: "custom:department",
-        Value: department,
+        Value: department.name,
       },
       {
         Name: "custom:delivery_unit",
-        Value: deliveryUnit,
+        Value: deliveryUnit.name,
       },
     ];
 
@@ -191,8 +236,8 @@ export function SignupModal({ openModal, setOpenModal }) {
           setEmail("");
           setPassword("");
           setName("");
-          setDeliveryUnit("");
-          setDepartment("");
+          setDeliveryUnit(deliveryUnitValues[0]);
+          setDepartment(departmentValues[0]);
           setTitle("");
           setError(null);
           alert("Successfully confirmed, you can now sign in!");
@@ -216,8 +261,8 @@ export function SignupModal({ openModal, setOpenModal }) {
               setEmail("");
               setPassword("");
               setName("");
-              setDeliveryUnit("");
-              setDepartment("");
+              setDeliveryUnit(deliveryUnitValues[0]);
+              setDepartment(departmentValues[0]);
               setTitle("");
               setConfirmationCode(null);
             }}
@@ -289,24 +334,18 @@ export function SignupModal({ openModal, setOpenModal }) {
                   </div>
                   <div className="flex flex-col text-[--accent-color] mt-8">
                     <label className="text-md font-medium">Department</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="Enter your department"
-                      value={department}
-                      onChange={(event) => setDepartment(event.target.value)}
-                      className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
+                    <Select
+                      options={departmentValues}
+                      selected={department}
+                      setSelected={setDepartment}
                     />
                   </div>
                   <div className="flex flex-col text-[--accent-color] mt-8">
                     <label className="text-md font-medium">Delivery unit</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="Enter your delivery unit"
-                      value={deliveryUnit}
-                      onChange={(event) => setDeliveryUnit(event.target.value)}
-                      className="input__border placeholder:text-[--color-gray-light] focus:ring focus:ring-[--color-gray-light-transparent] px-3 py-1 rounded-lg lg:py-2"
+                    <Select
+                      options={deliveryUnitValues}
+                      selected={deliveryUnit}
+                      setSelected={setDeliveryUnit}
                     />
                   </div>
                   <div className="flex flex-col text-[--accent-color] mt-8">
@@ -361,7 +400,7 @@ export function LoginModal({
   password,
   setPassword,
 }) {
-  const { authenticate, setAuthed, setUser } = useContext(AuthCtx);
+  const { authenticate, setAuthed, setUser, user } = useContext(AuthCtx);
   const [error, setError] = useState("");
   function onLogin(event) {
     event.preventDefault();

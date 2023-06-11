@@ -52,7 +52,7 @@ function Conference({
     filteredTechnologies.push(foundObj);
   }
 
-  const { authed, user } = useContext(AuthCtx);
+  const { authed, user, admin } = useContext(AuthCtx);
 
   let formattedStartDate;
 
@@ -119,14 +119,14 @@ function Conference({
               "grid place-items-center"
             } mt-10 lg:mt-0`}
           >
-            {authed && isCreator ? (
-              <button
-                onClick={() => setShowEditConf(true)}
+            {(admin && authed) || (authed && isCreator) ? (
+              <Link
+                to={`/conference/${id}`}
                 className="flex items-center gap-1 text-[--color-gray-dark]"
               >
                 <BiEdit className="text-lg" />
                 <p className="text-md font-semibold">Edit</p>
-              </button>
+              </Link>
             ) : null}
 
             {authed && !isInMyEvents ? (
@@ -179,8 +179,6 @@ export function EditConfModal({
     useState(technologies);
   const { user } = useContext(AuthCtx);
 
-  const creatorId = user ? user.sub : null;
-
   const queryClient = useQueryClient();
 
   const { id } = useParams();
@@ -195,8 +193,6 @@ export function EditConfModal({
     description: currentDescription,
     technologies: currentSelectedTechnologies,
   };
-
-  console.log(editConferenceBody);
 
   // function resetForm() {
   //   setTitle("");

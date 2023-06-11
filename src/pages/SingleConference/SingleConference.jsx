@@ -22,7 +22,7 @@ export default function SingleConference() {
 
   const { id } = useParams();
   const queryClient = useQueryClient();
-  const { user, authed } = useContext(AuthCtx);
+  const { user, authed, admin } = useContext(AuthCtx);
 
   const { data, isLoading } = useQuery({
     queryKey: ["conference", id],
@@ -57,10 +57,19 @@ export default function SingleConference() {
       myEvents: myEvents.filter((event) => event.id !== id),
     };
 
+  const currentConfData = data && {
+    startTime: data.startTime,
+    endTime: data.endTime,
+    startDate: data.startDate,
+    endDate: data.endDate,
+  };
+
   const userBody = user &&
     data && {
       userId: user.sub,
       name: user.name,
+      myEvents,
+      currConf: currentConfData,
       userTitle: user["custom:title"],
       department: user["custom:department"],
       deliveryUnit: user["custom:delivery_unit"],
@@ -69,6 +78,7 @@ export default function SingleConference() {
       startTime: data.startTime,
       endTime: data.endTime,
       startDate: data.startDate,
+      endDate: data.endDate,
       title: data.title,
       technologies: data.technologies,
     };
@@ -122,7 +132,7 @@ export default function SingleConference() {
     const splittedEndDate = data.endDate.split("-");
     const endYear = splittedEndDate[0];
     const endMonth = splittedEndDate[1] - 1;
-    const endDay = splittedDate[2];
+    const endDay = splittedEndDate[2];
 
     const newEndDate = new Date(endYear, endMonth, endDay);
     formattedEndDate = format(newEndDate, "dd MMMM yyyy");
@@ -225,7 +235,7 @@ export default function SingleConference() {
                   ))}
                 </div>
               </div>
-              {authed && isCreator ? (
+              {(admin && authed) || (authed && isCreator) ? (
                 <button
                   onClick={() => setShowEditConf(true)}
                   className="flex items-center self-center justify-self-center gap-4 text-[--color-gray-dark]"
@@ -248,15 +258,20 @@ export default function SingleConference() {
                     </span>
                   </button>
                 ) : (
-                  <button
-                    onClick={attendMutation.mutate}
-                    className="self-center flex items-center justify-self-center px-4 py-2 rounded-lg gap-6 bg-[--accent-color]"
-                  >
-                    <HiPlus className="text-white" />
-                    <span className="text-lg font-semibold text-white">
-                      {attendMutation.isLoading ? "Attending..." : "Attend"}
-                    </span>
-                  </button>
+                  <>
+                    <button
+                      onClick={attendMutation.mutate}
+                      className="self-center flex items-center justify-self-center px-4 py-2 rounded-lg gap-6 bg-[--accent-color]"
+                    >
+                      <HiPlus className="text-white" />
+                      <span className="text-lg font-semibold text-white">
+                        {attendMutation.isLoading ? "Attending..." : "Attend"}
+                      </span>
+                    </button>
+                    <p className="text-red-500 text-center">
+                      {attendMutation.data && attendMutation.data.errorMessage}
+                    </p>
+                  </>
                 )
               ) : null}
             </div>

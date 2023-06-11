@@ -11,6 +11,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [authed, setAuthed] = useState(false);
   const [user, setUser] = useState(null);
+  const [admin, setAdmin] = useState(false);
 
   async function getSession() {
     return await new Promise((resolve, reject) => {
@@ -94,6 +95,8 @@ export function AuthProvider({ children }) {
     setUser,
     logout,
     confirmAccount,
+    admin,
+    setAdmin,
   };
 
   return <AuthCtx.Provider value={providerValue}>{children}</AuthCtx.Provider>;

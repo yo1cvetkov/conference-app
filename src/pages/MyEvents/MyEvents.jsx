@@ -14,6 +14,8 @@ function MyEvents() {
 
   const myEvents = queryClient.getQueryData(["my-events", id]);
 
+  // console.log(myEvents);
+
   return (
     <section className="container my-40">
       <h2 className="font-bold text-3xl mb-8 text-[--accent-color]">

@@ -22,7 +22,9 @@ export default function Events() {
   const [showNewConf, setShowNewConf] = useState(false);
   const [showEditConf, setShowEditConf] = useState(false);
   const [sorted, setSorted] = useState(false);
-  const { authed } = useContext(AuthCtx);
+  const { authed, user } = useContext(AuthCtx);
+
+  const id = user && user.sub;
 
   const conferencesQuery = useQuery({
     queryKey: ["conferences"],

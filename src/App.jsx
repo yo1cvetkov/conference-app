@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getMyEvents } from "./utils/getMyEvents";
 import { useContext } from "react";
 import { AuthCtx } from "./context/AuthCtx.jsx";
+import { checkIsAdmin } from "./utils/isAdmin.js";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
 ]);
 
 function App({ children }) {
-  const { user } = useContext(AuthCtx);
+  const { user, setIsAdmin } = useContext(AuthCtx);
 
   const id = user && user.sub;
 
@@ -43,6 +44,10 @@ function App({ children }) {
     queryKey: ["my-events", id],
     queryFn: () => getMyEvents(id),
   });
+
+  // if (userQuery.isSuccess) {
+  //   setIsAdmin(userQuery.data);
+  // }
 
   return (
     <>
