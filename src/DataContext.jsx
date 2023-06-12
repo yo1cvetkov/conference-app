@@ -14,7 +14,8 @@ export const DataContext = createContext({
     attendToConference: () => {},
     createConference: () => {},
     editConference: () => {},
-    attendConfereceUsers: () => {}
+    attendConfereceToUsers: () => {},
+    update: false
 })
 
 export default function DataProvider({children}){
@@ -24,6 +25,11 @@ export default function DataProvider({children}){
     const editURL = 'https://a7wght99zk.execute-api.eu-central-1.amazonaws.com/test/edit';
     const [conferences, setConferences] = useState(null);
     const [users, setUsers] = useState(null);
+    const [update, setUpdate] = useState(false);
+
+    const toggleUpdate = () => {
+      setUpdate(old=>!old);
+    }
 
     const fetchConferences = () => {
         const requestConfig = {
@@ -68,6 +74,7 @@ export default function DataProvider({children}){
     }
 
     const createConference = (name, startDate, endDate, startTime, endTime, url, description, technologies, setMessage) =>{
+          toggleUpdate();
           if(name.trim('') === "" || startDate.trim('') === "" || endDate.trim('') === "" || startTime.trim('') === "" || endTime.trim('') === "" || url.trim('') === ""){
             setMessage("All fields are required");
             return;
@@ -81,7 +88,7 @@ export default function DataProvider({children}){
 
         const requestBody = {
             name: name,
-            author_id: getUser().name,
+            author_id: getUser().user_id,
             startDate: startDate,
             endDate: endDate,
             startTime: startTime,
@@ -92,7 +99,6 @@ export default function DataProvider({children}){
         }
 
         axios.post(attendURL, requestBody, requestConfig).then(response => {
-            fetchConferences();
             setMessage("Konferencija kreirana!");
             setTimeout(()=>{
               setMessage(null)
@@ -123,7 +129,7 @@ export default function DataProvider({children}){
       }
 
         axios.patch(editURL, requestBody, requestConfig).then((response) => {
-          fetchConferences();
+          toggleUpdate();
           setMessage("Uspesno ste izmenili konferenciju!");
           setTimeout(()=>{
             setMessage(null)
@@ -135,6 +141,7 @@ export default function DataProvider({children}){
     }
 
     const attendToConference = (name, attenders, allConferences, userAttendingConferences) => {
+      toggleUpdate();
       const requestConfig = {
         headers: {
           'x-api-key': 'qCN51M0Zbs5FRo0r8IdHt90raGmJYSlP3FUsX1jo',
@@ -148,14 +155,18 @@ export default function DataProvider({children}){
       }
 
         axios.patch(attendURL, requestBody, requestConfig).then((response) => {
-          fetchConferences();
           })
-          .catch((error) => {
-            console.log(error);
-          });
+          .catch(error => {
+            if(error.response.status === 401) {
+                console.log(error.response.status);
+            }else{
+                console.log('sorry backend failed')
+            }
+        })
+        
     }
 
-    const attendConfereceUsers = (user_id, attendedConferences) => {
+    const attendConfereceToUsers = (user_id, attendedConferences) => {
       const requestConfig = {
         headers: {
           'x-api-key': 'qCN51M0Zbs5FRo0r8IdHt90raGmJYSlP3FUsX1jo',
@@ -167,9 +178,8 @@ export default function DataProvider({children}){
       }
 
         axios.patch(fetchUsersURL, requestBody, requestConfig).then((response) => {
-          fetchUsers();
-          })
-          .catch((error) => {
+          toggleUpdate();
+        }).catch((error) => {
             console.log(error);
           });
     }
@@ -184,7 +194,8 @@ export default function DataProvider({children}){
         attendToConference,
         createConference,
         editConference,
-        attendConfereceUsers
+        attendConfereceToUsers,
+        update
     }
 
 

@@ -4,11 +4,19 @@ import Sketch from "../../assets/sketch.png"
 import "./MyEvents.css"
 import { getUser } from '../../service/AuthService.js'
 import { DataContext } from '../../DataContext.jsx'
+import { LoggedContext } from '../../AuthContext.jsx'
 
 function MyEvents() {
-  const confArray = useContext(DataContext).conferences;
-  if(!confArray) return <div>loading...</div>
-  const confArr = confArray.filter(obj=>obj.author_id === getUser().name);
+  const isLogged = useContext(LoggedContext).logged;
+  const conferences = useContext(DataContext).conferences;
+  const users = useContext(DataContext).users;
+
+  if(!conferences || !users) return <div>loading...</div>
+
+  const confArr = conferences.filter(obj=>obj.author_id === getUser().user_id);
+  
+  let userConfArr = null;
+  if(isLogged) userConfArr = users.filter(obj => obj.user_id === getUser().user_id)[0].attendedConferences;
   
   return (
     <section className='container'>
@@ -17,7 +25,7 @@ function MyEvents() {
       {confArr.length > 0 ? <div className='conference__container'>
         {confArr.map((obj,i)=>{
           return <Conference key={i} 
-          id={obj.author_id} 
+          author_id={obj.author_id} 
           name={obj.name} 
           startDate={obj.startDate} 
           endDate={obj.endDate} 
@@ -25,7 +33,8 @@ function MyEvents() {
           endTime={obj.endTime} 
           description={obj.description} 
           technologies={obj.technologies} 
-          attenders={obj.attenders}/>
+          attenders={obj.attenders}
+          userConfArr={userConfArr}/>
         })}
       </div> : <h2 className='title__h2'>YOU HAVEN'T CREATED ANY CONFERENCE YET.</h2>}
       <div className='my__add__container'>

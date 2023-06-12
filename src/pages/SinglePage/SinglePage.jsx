@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import "./singlePage.css"
 import { useParams } from 'react-router-dom'
 import noImg from "../../assets/noImg.jpg"
@@ -14,26 +14,35 @@ import { technologiesData } from '../../technologiesData'
 function SinglePage() {
     const ParamObj = useParams();
     const nameC = ParamObj.name;
-    const confArrS = useContext(DataContext).conferences;
-    if(!confArrS) return <div>loading...</div>
-    const confArr = confArrS.filter(obj=>obj.name===nameC);
+    const conferences = useContext(DataContext).conferences;
+    if(!conferences) return <div>loading...</div>
+    const confArr = conferences.filter(obj=>obj.name===nameC);
     const {name, startDate, startTime, endDate, description, author_id, technologies, attenders} = confArr[0];
     const isLogged = useContext(LoggedContext).logged;
     const [attendState, setAttendState] = useState(attenders);
     const attendConf = useContext(DataContext).attendToConference;
-    let user;
-    isLogged ? user = getUser().name : "";
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      if (isLogged) {
+        const currentUser = {
+          name: getUser().name,
+          user_id: getUser().user_id,
+        };
+        setUser(currentUser);
+      }
+    }, [isLogged]);
+  
 
     const attendUpdate = (event) => {
       event.preventDefault();
-      setAttendState(oldVal => {
-        const updatedState = oldVal.includes(user) ? Array.from(oldVal).filter(it => it !== user) : [...oldVal, user];
-        attendConf(name, updatedState);
+      setAttendState((oldVal) => {
+        const userString = JSON.stringify(user);
+        const updatedState = oldVal.some((item) => item.user_id == user.user_id) ? oldVal.filter((it) => JSON.stringify(it) !== userString) : [...oldVal, user];
+        attendConf(name, updatedState, conferences, user);
         return updatedState;
       });
-      
-    } 
-
+    };
 
     
   return (
@@ -68,7 +77,7 @@ function SinglePage() {
             </div>
             </div>
             {isLogged && <form className="single__form" onSubmit={attendUpdate}>
-            <input className="btn btn__input" type="submit" value={attendState.includes(user) ? "Cancel -" : "Attend +"} />
+            <input className="btn btn__input" type="submit" value={attendState.some((item) => item.user_id === user.user_id) ? "Cancel -" : "Attend +"} />
           </form>}
         </div>
       </div>
@@ -80,7 +89,7 @@ function SinglePage() {
             return (
             <div className='single__user' key={i}>
                 <FaUser />
-                <p>{item}</p>
+                <p>{item.name}</p>
             </div>
             )
         }) : <h3>Currently there are no attenders for this conference</h3>}

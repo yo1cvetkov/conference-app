@@ -1,5 +1,5 @@
 import "./conference.css";
-import React, { useContext, useState} from "react";
+import React, { useContext, useState, useEffect} from "react";
 import { LoggedContext } from "../AuthContext";
 import { Link } from "react-router-dom";
 import noImg from "../assets/noImg.jpg";
@@ -11,28 +11,47 @@ import { technologiesData } from "../technologiesData";
 import EditModal from "../modals/EditModal";
 
 function Conference(props) {
-  const { name, startDate, endDate, startTime, endTime, description ,id, technologies, attenders} = props;
-
+  const { name, startDate, endDate, startTime, endTime, description, author_id, technologies, attenders, userConfArr} = props;
+ 
   const isLogged = useContext(LoggedContext).logged;
   const attendConf = useContext(DataContext).attendToConference; 
-  const conferences = useContext(DataContext).conferences; 
+  const attendUser = useContext(DataContext).attendConfereceToUsers;
+  const conferences = useContext(DataContext).conferences;
+  const update = useContext(DataContext).update;
+
   const [attendState, setAttendState] = useState(attenders);
+  const [currentConferences, setCurrentConferences] = useState([]);
   const [showNewEdit, setShowNewEdit] = useState(false);
 
-  
-  let user;
-  isLogged ? user = {name: getUser().name, user_id: getUser().user_id, attendedConferences: getUser().attendedConferences} : "";
-  
+  let user = null;
+  if(isLogged) user = {
+    name: getUser().name,
+    user_id: getUser().user_id,
+  };
 
+  if(isLogged && !user) return <div>Loading...</div>
+
+  useEffect(() => {
+    setCurrentConferences(userConfArr);
+  }, [userConfArr, update]);
+  
   const attendUpdate = (event) => {
     event.preventDefault();
-    setAttendState(oldVal => {
-      const updatedState = oldVal.includes(user.name) ? Array.from(oldVal).filter(it => it !== user.name) : [...oldVal, user.name];
-      attendConf(name, updatedState, conferences, user.attendedConferences);
+    setAttendState((oldVal) => {
+      const userString = JSON.stringify(user);
+      const updatedState = oldVal.some((item) => item.user_id === user.user_id) ? oldVal.filter((it) => JSON.stringify(it) !== userString) : [...oldVal, user];
+      attendConf(name, updatedState, conferences, userConfArr);
       return updatedState;
     });
-  } 
 
+
+    setCurrentConferences((oldVal) => {
+      const updatedState = oldVal.includes(name) ? oldVal.filter((it) => it !== name) : [...oldVal, name];
+      attendUser(user.user_id, updatedState);
+      return updatedState;
+    })
+  };
+ 
   return (
     <div className="conference__main__div">
       <EditModal open={showNewEdit} setOpen={setShowNewEdit} name={name} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} description={description}/>
@@ -64,13 +83,13 @@ function Conference(props) {
         {isLogged && <div className="attend__edit__div">
             <div className="edit__div">
               <div className="edit__div__sm">
-              {id === user ? <BiEdit  onClick={()=> setShowNewEdit(old => !old)}/> : <p className="edit__p">{`Author: ${id}`}</p>}
-              {id === user && <p className="edit__p"  onClick={()=> setShowNewEdit(old => !old)}>Edit</p>}
+              {author_id ? <BiEdit  onClick={()=> setShowNewEdit(old => !old)}/> : <p className="edit__p">{`Author: ${author_id}`}</p>}
+              {author_id  && <p className="edit__p"  onClick={()=> setShowNewEdit(old => !old)}>Edit</p>}
               </div>
             </div>
 
           <form onSubmit={attendUpdate}>
-            <input className="btn btn__input" type="submit" value={attendState.includes(user.name) ? "Cancel -" : "Attend +"} />
+            <input className="btn btn__input" type="submit" value={attendState.some((item) => item.user_id === user.user_id) ? "Cancel -" : "Attend +"} />
           </form>
         </div>}
       </div>
