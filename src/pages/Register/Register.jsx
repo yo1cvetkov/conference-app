@@ -1,7 +1,6 @@
+import "./register.css"
 import React, { useContext } from 'react'
 import { useState } from 'react'
-import axios from 'axios'
-import "./register.css"
 import { LoggedContext } from '../../AuthContext';
 
 function Register() {
@@ -49,6 +48,7 @@ function Register() {
         </form>
         <h2 className='title__h2'>{message}</h2>
         </div>
+        <img src="" alt="" />
     </section>
   )
 }

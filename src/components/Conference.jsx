@@ -51,12 +51,14 @@ function Conference(props) {
       return updatedState;
     })
   };
+
+  const imgUrl = `https://conf-app-bucket.s3.eu-central-1.amazonaws.com/`
  
   return (
     <div className="conference__main__div">
       <EditModal open={showNewEdit} setOpen={setShowNewEdit} name={name} startDate={startDate} endDate={endDate} startTime={startTime} endTime={endTime} description={description}/>
       <div className="left__div">
-        <img className="no__img" src={noImg} alt="no_image" />
+        <img className="no__img" src={imgUrl+name+".png"} alt={"There is no image for this Conference."} />
         <div className="info__div">
           <Link to={`/conference/${name}`}>
             <h2 className="name__h2">{name}</h2>

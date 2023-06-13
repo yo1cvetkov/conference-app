@@ -15,7 +15,8 @@ export const DataContext = createContext({
     createConference: () => {},
     editConference: () => {},
     attendConfereceToUsers: () => {},
-    update: false
+    update: false,
+    uploadImage: () => {}
 })
 
 export default function DataProvider({children}){
@@ -23,6 +24,7 @@ export default function DataProvider({children}){
     const fetchUsersURL = 'https://a7wght99zk.execute-api.eu-central-1.amazonaws.com/test/users';
     const attendURL = 'https://a7wght99zk.execute-api.eu-central-1.amazonaws.com/test/conference';
     const editURL = 'https://a7wght99zk.execute-api.eu-central-1.amazonaws.com/test/edit';
+    
     const [conferences, setConferences] = useState(null);
     const [users, setUsers] = useState(null);
     const [update, setUpdate] = useState(false);
@@ -184,6 +186,23 @@ export default function DataProvider({children}){
           });
     }
 
+    const uploadImage = (image, urlPath, extension) => {
+      const imgUrl = `https://v6hfqy5d59.execute-api.eu-central-1.amazonaws.com/test/conf-app-bucket/${urlPath}.${extension}`;
+      const requestBody = image;
+
+      const requestConfig = {
+        headers: {
+          "Content-Type": "image/png",
+        }
+      }
+
+      axios.put(imgUrl, requestBody, requestConfig).then(response => {
+        console.log(response);
+      }).catch(error => {
+        console.log(error);
+      })
+    }
+
     const contextValue = {
         conferences: conferences,
         setConferences,
@@ -195,7 +214,8 @@ export default function DataProvider({children}){
         createConference,
         editConference,
         attendConfereceToUsers,
-        update
+        update,
+        uploadImage
     }
 
 

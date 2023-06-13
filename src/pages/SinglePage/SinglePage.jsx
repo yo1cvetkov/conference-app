@@ -1,7 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react'
 import "./singlePage.css"
+import React, { useContext, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import noImg from "../../assets/noImg.jpg"
 import {FaUser} from "react-icons/fa"
 import {BsCalendar3} from "react-icons/bs"
 import {BsFillClockFill} from "react-icons/bs"
@@ -44,12 +43,13 @@ function SinglePage() {
       });
     };
 
+    const imgUrl = `https://conf-app-bucket.s3.eu-central-1.amazonaws.com/`;
     
   return (
     <section className='container'>
         <h2 className="title__single__h2">{name}</h2>
       <div className='single__container'>
-        <img src={noImg} alt="No-image" />
+        <img src={imgUrl+name+".png" || imgUrl+name+".jpg"} alt="No-image" />
         <div className='conf__info'>
           <div className='icon__name__div'><BsCalendar3 /><p className='p__bold'>Start Date:</p></div>
           <p>{startDate}</p>

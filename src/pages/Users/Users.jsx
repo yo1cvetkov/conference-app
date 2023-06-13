@@ -1,7 +1,7 @@
+import "./Users.css";
 import React, { useContext, useState } from "react";
 import User from "../../components/User.jsx";
 import Sketch from "../../assets/sketch.png";
-import "./Users.css";
 import { DataContext } from "../../DataContext.jsx";
 import { UserDetailsModal } from "../../modals/UserDetailsModal.jsx";
 

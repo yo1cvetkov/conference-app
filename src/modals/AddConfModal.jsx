@@ -15,19 +15,27 @@ export function AddConfModal({ open, setOpen }) {
     const [description, setDescription] = useState('');
     const [technologies, setTechnologies] = useState([]);
     const [message, setMessage] = useState(null);
+    const [image, setImage] = useState(null);
     
     const isLogged = useContext(LoggedContext).logged;
     const createConference = useContext(DataContext).createConference;
+    const uploadImage = useContext(DataContext).uploadImage;
     if(!isLogged) setOpen(false);
   
     const handleCheck = (event) => {
       setTechnologies(oldVal => event.target.checked ? [...oldVal, event.target.name] : oldVal.map(it=>it===event.target.name?'':it).filter(it=>it!==''));
     };
+
+    const readBlob = (file) => {
+        setImage(file);
+  }
   
     const createHandler = (event) => {
       event.preventDefault();
           createConference(name, startDate, endDate, startTime, endTime, url, description, technologies, setMessage);
           setName('');setStartDate('');setEndDate('');setStartTime('');setEndTime('');setUrl('');setDescription('');setTechnologies([]);
+          
+          if(image) uploadImage(image, name, image.name.slice(-3))
       }
   
   
@@ -128,7 +136,7 @@ export function AddConfModal({ open, setOpen }) {
             </div>
             <div className="flex flex-col text-[--accent-color] mt-8">
               <label className="text-md font-medium">
-                Select appropriate technologies
+                Select appropriate technologies:
               </label>
               <div className="flex gap-5 mt-4">
                 {technologiesData.map((item) => (
@@ -139,11 +147,14 @@ export function AddConfModal({ open, setOpen }) {
                 ))}
               </div>
             </div>
+            <div className="flex flex-col">
+            <label className="mt-8" htmlFor="img_upload">Choose an image:</label>
+             <input className="mt-4" name="img_upload" type="file" accept="image/png, image/jpeg" onChange={event => readBlob(event.target.files[event.target.files.length-1])}/>
             <input className="btn btn__input2 mt-8 mx-auto mb-8" type="submit" value="CREATE EVENT" />
+            </div>
             <div className="text-2xl">{message}</div>
           </form>
         </div>
       </>
     );
   }
-  
