@@ -145,7 +145,7 @@ export function UserDetails({
                   <li key={event.id} className="mb-5">
                     <Link
                       className="text-xl lg:text-2xl flex gap-2 items-center text-[--accent-color]"
-                      to="/"
+                      to={`/conference/${event.id}`}
                     >
                       <MdArrowForward />
                       <span className="hover:translate-x-4 hover:text-[--accent-color-light] transition-all duration-200">

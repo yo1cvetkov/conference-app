@@ -262,6 +262,7 @@ export default function SingleConference() {
                     <button
                       onClick={attendMutation.mutate}
                       className="self-center flex items-center justify-self-center px-4 py-2 rounded-lg gap-6 bg-[--accent-color]"
+                      disabled={attendMutation.isLoading}
                     >
                       <HiPlus className="text-white" />
                       <span className="text-lg font-semibold text-white">

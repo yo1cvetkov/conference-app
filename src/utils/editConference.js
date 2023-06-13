@@ -1,6 +1,6 @@
 export async function editConference(id, body) {
   const res = await fetch(
-    `https://ek5vkt4dxb.execute-api.eu-central-1.amazonaws.com/dev/conference/${id}/edit`,
+    `https://bujmdxjfm0.execute-api.eu-central-1.amazonaws.com/dev/conference/${id}/edit`,
     {
       method: "PATCH",
       headers: {
