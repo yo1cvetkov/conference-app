@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { BiRun } from "react-icons/bi";
 
 export function UserDetailsModal({ openModal, setOpenModal, info}) {
-
+    if(!info.attendedConferences) return <div></div>
     return createPortal(
       <>
         <>
@@ -74,34 +74,23 @@ export function UserDetailsModal({ openModal, setOpenModal, info}) {
                 </p>
               </div>
             </div>
-            <div className="flex gap-2 text-[--color-gray-medium] font-medium text-xl mt-10 lg:mt-20">
+            <div className="flex gap-2 text-[--color-gray-medium] font-medium text-xl mt-10 lg:mt-20 mb-4">
               <BiRun className="text-[--color-gray-medium]" />
               Attends
             </div>
-            <ul className="mt-5">
-              <li className="mb-5">
-                <Link
-                  className="text-xl lg:text-2xl flex gap-2 items-center text-[--accent-color]"
-                  to="/"
-                >
-                  <MdArrowForward />
-                  <span className="hover:translate-x-4 hover:text-[--accent-color-light] transition-all duration-200">
-                    NodeJS Conference
-                  </span>
-                </Link>
-              </li>
-              <li className="mb-5">
-                <Link
-                  className="text-xl lg:text-2xl flex gap-2  items-center text-[--accent-color]"
-                  to="/"
-                >
-                  <MdArrowForward />
-                  <span className="hover:translate-x-4 hover:text-[--accent-color-light] transition-all duration-200">
-                    Serverless AWS Conf
-                  </span>
-                </Link>
-              </li>
-            </ul>
+              {info.attendedConferences.length > 0 ? info.attendedConferences.map(it=>{
+                  return(<li className="mb-5">
+                   <Link
+                     className="text-xl lg:text-2xl flex gap-2 items-center text-[--accent-color]"
+                     to={`/conference/${it}`}
+                   >
+                     <MdArrowForward />
+                     <span className="hover:translate-x-4 hover:text-[--accent-color-light] transition-all duration-200">
+                       {it}
+                     </span>
+                   </Link>
+                 </li>)
+              }): <p className="text-xl lg:text-2xl flex gap-2 items-center text-[--accent-color]">No attended conferences yet.</p>}
           </div>
         </>
       </>,

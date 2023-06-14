@@ -11,7 +11,7 @@ import { DataContext } from './DataContext'
 function App() {
   const { fetchConferences, fetchUsers, update} = useContext(DataContext);
   const [render, setRender] = useState(false);
-
+  
   useEffect(() => {
     fetchConferences();
     fetchUsers();

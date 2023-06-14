@@ -1,8 +1,7 @@
 import "./conference.css";
-import React, { useContext, useState, useEffect} from "react";
+import React, { useContext, useState} from "react";
 import { LoggedContext } from "../AuthContext";
 import { Link } from "react-router-dom";
-import noImg from "../assets/noImg.jpg";
 import { BiEdit } from "react-icons/bi";
 import { BsCalendar3,  BsFillClockFill } from "react-icons/bs";
 import { getUser } from "../service/AuthService";
@@ -14,44 +13,45 @@ function Conference(props) {
   const { name, startDate, endDate, startTime, endTime, description, author_id, technologies, attenders, userConfArr} = props;
  
   const isLogged = useContext(LoggedContext).logged;
-  const attendConf = useContext(DataContext).attendToConference; 
-  const attendUser = useContext(DataContext).attendConfereceToUsers;
-  const conferences = useContext(DataContext).conferences;
-  const update = useContext(DataContext).update;
+  const {attendToConference, attendConfereceToUsers, conferences, users, toggleUpdate} = useContext(DataContext)
 
-  const [attendState, setAttendState] = useState(attenders);
-  const [currentConferences, setCurrentConferences] = useState([]);
   const [showNewEdit, setShowNewEdit] = useState(false);
+  const [error, setError] = useState(null);
+  if(!users) return <div>Loading...</div>
+  const userName = users.filter(obj => obj.user_id === author_id)[0].name;
 
   let user = null;
-  if(isLogged) user = {
-    name: getUser().name,
-    user_id: getUser().user_id,
-  };
-
+  let isAdmin = false;
+  if(isLogged) {
+    user = {
+     name: getUser().name,
+     user_id: getUser().user_id
+  }
+  isAdmin = users.filter(obj => obj.user_id === user.user_id)[0].isAdmin;
+}
   if(isLogged && !user) return <div>Loading...</div>
-
-  useEffect(() => {
-    setCurrentConferences(userConfArr);
-  }, [userConfArr, update]);
   
+  
+
+
   const attendUpdate = (event) => {
     event.preventDefault();
-    setAttendState((oldVal) => {
-      const userString = JSON.stringify(user);
-      const updatedState = oldVal.some((item) => item.user_id === user.user_id) ? oldVal.filter((it) => JSON.stringify(it) !== userString) : [...oldVal, user];
-      attendConf(name, updatedState, conferences, userConfArr);
-      return updatedState;
-    });
-
-
-    setCurrentConferences((oldVal) => {
-      const updatedState = oldVal.includes(name) ? oldVal.filter((it) => it !== name) : [...oldVal, name];
-      attendUser(user.user_id, updatedState);
-      return updatedState;
-    })
+  
+    const userString = JSON.stringify(user);
+    const updatedState = attenders.some((item) => item.user_id === user.user_id) ? attenders.filter((item) => JSON.stringify(item) !== userString): [...attenders, user];
+  
+    attendToConference(name, updatedState, conferences, userConfArr).then((response) => {
+        if (response.status === 401) console.log('Overlap');
+        else {
+          const updatedUserState = userConfArr.includes(name) ? userConfArr.filter((it) => it !== name) : [...userConfArr, name];
+          attendConfereceToUsers(user.user_id, updatedUserState);
+          toggleUpdate();
+        }
+      })
+      .catch((error) => {setError(error+"")});
+      setTimeout(()=>{setError(null)},2000);
   };
-
+  
   const imgUrl = `https://conf-app-bucket.s3.eu-central-1.amazonaws.com/`
  
   return (
@@ -65,11 +65,11 @@ function Conference(props) {
           </Link>
           <div className="icon__name__div">
             <BsCalendar3 />
-            <p className="p__bold">{startDate}</p>
+            <p className="p__bold">{startDate} | {endDate}</p>
           </div>
           <div className="icon__name__div">
             <BsFillClockFill />
-            <p className="p__bold">{startTime}</p>
+            <p className="p__bold">{startTime} - {endTime}</p>
           </div>
         </div>
       </div>
@@ -85,14 +85,15 @@ function Conference(props) {
         {isLogged && <div className="attend__edit__div">
             <div className="edit__div">
               <div className="edit__div__sm">
-              {author_id ? <BiEdit  onClick={()=> setShowNewEdit(old => !old)}/> : <p className="edit__p">{`Author: ${author_id}`}</p>}
-              {author_id  && <p className="edit__p"  onClick={()=> setShowNewEdit(old => !old)}>Edit</p>}
+              {isAdmin || author_id === user.user_id ? <BiEdit  onClick={()=> setShowNewEdit(old => !old)}/> : <p className="edit__p">{`Author: ${userName}`}</p>}
+              {isAdmin || author_id === user.user_id ? <p className="edit__p"  onClick={()=> setShowNewEdit(old => !old)}>Edit</p> : null}
               </div>
             </div>
 
           <form onSubmit={attendUpdate}>
-            <input className="btn btn__input" type="submit" value={attendState.some((item) => item.user_id === user.user_id) ? "Cancel -" : "Attend +"} />
+            <input className="btn btn__input" type="submit" value={attenders.some((item) => item.user_id === user.user_id) ? "Cancel -" : "Attend +"} />
           </form>
+          <p className="text-red-700">{error}</p>
         </div>}
       </div>
     </div>

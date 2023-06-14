@@ -1,5 +1,5 @@
 import "./singlePage.css"
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState} from 'react'
 import { useParams } from 'react-router-dom'
 import {FaUser} from "react-icons/fa"
 import {BsCalendar3} from "react-icons/bs"
@@ -13,35 +13,48 @@ import { technologiesData } from '../../technologiesData'
 function SinglePage() {
     const ParamObj = useParams();
     const nameC = ParamObj.name;
-    const conferences = useContext(DataContext).conferences;
-    if(!conferences) return <div>loading...</div>
-    const confArr = conferences.filter(obj=>obj.name===nameC);
-    const {name, startDate, startTime, endDate, description, author_id, technologies, attenders} = confArr[0];
-    const isLogged = useContext(LoggedContext).logged;
-    const [attendState, setAttendState] = useState(attenders);
-    const attendConf = useContext(DataContext).attendToConference;
-    const [user, setUser] = useState(null);
 
-    useEffect(() => {
-      if (isLogged) {
-        const currentUser = {
+    const isLogged = useContext(LoggedContext).logged;
+    const {conferences, users, attendToConference, attendConfereceToUsers} = useContext(DataContext);
+
+    if(!conferences) return <div>loading...</div>
+    if(!users) return <div>Loading...</div>
+
+    const confArr = conferences.filter(obj=>obj.name===nameC);
+    const {name, startDate, startTime, endDate, endTime, description, author_id, technologies, attenders} = confArr[0];
+    const [error, setError] = useState(null);
+    const userName = users.filter(obj => obj.user_id === author_id)[0].name;
+
+    let user = null;
+    let userConfArr = null;
+
+    if(isLogged) {
+      user = {
           name: getUser().name,
           user_id: getUser().user_id,
-        };
-        setUser(currentUser);
       }
-    }, [isLogged]);
+      userConfArr = users.filter(obj => obj.user_id === getUser().user_id)[0].attendedConferences;
+  }
+  
+    if(isLogged && !user) return <div>Loading...</div>
   
 
     const attendUpdate = (event) => {
-      event.preventDefault();
-      setAttendState((oldVal) => {
-        const userString = JSON.stringify(user);
-        const updatedState = oldVal.some((item) => item.user_id == user.user_id) ? oldVal.filter((it) => JSON.stringify(it) !== userString) : [...oldVal, user];
-        attendConf(name, updatedState, conferences, user);
-        return updatedState;
-      });
-    };
+    event.preventDefault();
+  
+    const userString = JSON.stringify(user);
+    const updatedState = attenders.some((item) => item.user_id === user.user_id) ? attenders.filter((item) => JSON.stringify(item) !== userString): [...attenders, user];
+  
+    attendToConference(name, updatedState, conferences, userConfArr).then((response) => {
+        if (response.status === 401) console.log('Overlap');
+        else {
+          const updatedUserState = userConfArr.includes(name) ? userConfArr.filter((it) => it !== name) : [...userConfArr, name];
+          attendConfereceToUsers(user.user_id, updatedUserState);
+        }
+      })
+      .catch((error) => {setError(error+"")});
+      setTimeout(()=>{setError(null)},2000);
+  };
 
     const imgUrl = `https://conf-app-bucket.s3.eu-central-1.amazonaws.com/`;
     
@@ -49,22 +62,22 @@ function SinglePage() {
     <section className='container'>
         <h2 className="title__single__h2">{name}</h2>
       <div className='single__container'>
-        <img src={imgUrl+name+".png" || imgUrl+name+".jpg"} alt="No-image" />
+        <img src={imgUrl+name+".png"} alt="No-image" />
         <div className='conf__info'>
           <div className='icon__name__div'><BsCalendar3 /><p className='p__bold'>Start Date:</p></div>
-          <p>{startDate}</p>
+          <p className="p__props">{startDate}</p>
 
           <div className='icon__name__div'><BsCalendar3 /><p className='p__bold'>End Date:</p></div>
-          <p>{endDate}</p>
+          <p className="p__props">{endDate}</p>
 
           <div className='icon__name__div'><BsFillClockFill /><p className='p__bold'>Time:</p></div>
-          <p>{startTime}</p>
+          <p className="p__props">{startTime} - {endTime}</p>
 
           <div className='icon__name__div'><FaUser /><p className='p__bold'>Creator:</p></div>
-          <p>{author_id}</p>
+          <p className="p__props">{userName}</p>
 
           <div className='icon__name__div'><BiMessage /><p className='p__bold'>Description:</p></div>
-          <p>{description}</p>
+          <p className="p__props">{description}</p>
         </div>
 
         <div className='tec__div'>
@@ -77,8 +90,9 @@ function SinglePage() {
             </div>
             </div>
             {isLogged && <form className="single__form" onSubmit={attendUpdate}>
-            <input className="btn btn__input" type="submit" value={attendState.some((item) => item.user_id === user.user_id) ? "Cancel -" : "Attend +"} />
+            <input className="btn btn__input" type="submit" value={attenders.some((item) => item.user_id === user.user_id) ? "Cancel -" : "Attend +"} />
           </form>}
+          <p className="text-red-700 text-2xl">{error}</p>
         </div>
       </div>
       <div className='users__div'>

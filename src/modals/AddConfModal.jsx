@@ -1,7 +1,6 @@
 import { technologiesData } from "../technologiesData";
 import { MdClose } from "react-icons/md";
 import { useState, useContext } from "react";
-import { LoggedContext } from "../AuthContext";
 import { DataContext } from "../DataContext";
 
 export function AddConfModal({ open, setOpen }) {
@@ -17,10 +16,7 @@ export function AddConfModal({ open, setOpen }) {
     const [message, setMessage] = useState(null);
     const [image, setImage] = useState(null);
     
-    const isLogged = useContext(LoggedContext).logged;
-    const createConference = useContext(DataContext).createConference;
-    const uploadImage = useContext(DataContext).uploadImage;
-    if(!isLogged) setOpen(false);
+    const {createConference, uploadImage} = useContext(DataContext)
   
     const handleCheck = (event) => {
       setTechnologies(oldVal => event.target.checked ? [...oldVal, event.target.name] : oldVal.map(it=>it===event.target.name?'':it).filter(it=>it!==''));
@@ -33,9 +29,12 @@ export function AddConfModal({ open, setOpen }) {
     const createHandler = (event) => {
       event.preventDefault();
           createConference(name, startDate, endDate, startTime, endTime, url, description, technologies, setMessage);
-          setName('');setStartDate('');setEndDate('');setStartTime('');setEndTime('');setUrl('');setDescription('');setTechnologies([]);
+          setName('');setStartDate('');setEndDate('');setStartTime('');setEndTime('');setUrl('');setDescription('');
           
-          if(image) uploadImage(image, name, image.name.slice(-3))
+          if(image) uploadImage(image, name, image.name.slice(image.name.lastIndexOf('.')));
+          setTimeout(()=>{
+            setOpen(false)
+          }, 2000)
       }
   
   

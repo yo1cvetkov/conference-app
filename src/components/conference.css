@@ -79,6 +79,7 @@
 }
 .edit__p {
   color: var(--color-gray-dark);
+  cursor: default;
 }
 
 .edit__div svg {

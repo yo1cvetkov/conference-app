@@ -10,9 +10,10 @@ import { getUser } from "../../service/AuthService";
 
 function Events() {
   const [showNewConf, setShowNewConf] = useState(false);
+  const [update, setUpdate] = useState(false);
+  
   const isLogged = useContext(LoggedContext).logged;
-  const conferences = useContext(DataContext).conferences;
-  const users = useContext(DataContext).users;
+  const {conferences, setConferences, users} = useContext(DataContext);
   
   if(!users) return <div>loading...</div>
   if(!conferences) return <div>loading...</div>
@@ -21,11 +22,12 @@ function Events() {
   if(isLogged) userConfArr = users.filter(obj => obj.user_id === getUser().user_id)[0].attendedConferences;
   
   const sortHandle = () => {
-    conferences.sort((a,b)=>{
+    setConferences(oldVal => oldVal.sort((a,b)=>{
       const aTime = new Date(a.startDate).getTime() + a.startTime.split(":").map((e,i)=>i===0?+e:+e/60).reduce((a,c)=>a+c,0);
       const bTime = new Date(b.startDate).getTime() + b.startTime.split(":").map((e,i)=>i===0?+e:+e/60).reduce((a,c)=>a+c,0);
       return aTime - bTime;
-    })
+    }))
+    setUpdate(old => !old)
   }
 
   return (

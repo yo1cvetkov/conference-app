@@ -16,7 +16,8 @@ export const DataContext = createContext({
     editConference: () => {},
     attendConfereceToUsers: () => {},
     update: false,
-    uploadImage: () => {}
+    uploadImage: () => {},
+    toggleUpdate: () => {}
 })
 
 export default function DataProvider({children}){
@@ -76,7 +77,6 @@ export default function DataProvider({children}){
     }
 
     const createConference = (name, startDate, endDate, startTime, endTime, url, description, technologies, setMessage) =>{
-          toggleUpdate();
           if(name.trim('') === "" || startDate.trim('') === "" || endDate.trim('') === "" || startTime.trim('') === "" || endTime.trim('') === "" || url.trim('') === ""){
             setMessage("All fields are required");
             return;
@@ -102,6 +102,7 @@ export default function DataProvider({children}){
 
         axios.post(attendURL, requestBody, requestConfig).then(response => {
             setMessage("Konferencija kreirana!");
+            toggleUpdate();
             setTimeout(()=>{
               setMessage(null)
           }, 1500);
@@ -155,19 +156,24 @@ export default function DataProvider({children}){
         allConferences: allConferences,
         userAttendingConferences: userAttendingConferences
       }
-
-        axios.patch(attendURL, requestBody, requestConfig).then((response) => {
-          })
-          .catch(error => {
-            if(error.response.status === 401) {
-                console.log(error.response.status);
-            }else{
-                console.log('sorry backend failed')
-            }
+    
+      return axios.patch(attendURL, requestBody, requestConfig)
+        .then((response) => {
+          // Process the successful response if needed
+          return response.data; // Return the data you want to pass to the next `then` block
         })
-        
-    }
-
+        .catch(error => {
+          if (error.response && error.response.status === 401) {
+            console.log(error.response.status);
+            // Optionally, you can throw an error to reject the promise
+            throw new Error('Conference in overlap!');
+          } else {
+            console.log('Sorry, backend failed');
+            throw error; // Throw the error to reject the promise
+          }
+        });
+    };
+    
     const attendConfereceToUsers = (user_id, attendedConferences) => {
       const requestConfig = {
         headers: {
@@ -187,7 +193,7 @@ export default function DataProvider({children}){
     }
 
     const uploadImage = (image, urlPath, extension) => {
-      const imgUrl = `https://v6hfqy5d59.execute-api.eu-central-1.amazonaws.com/test/conf-app-bucket/${urlPath}.${extension}`;
+      const imgUrl = `https://v6hfqy5d59.execute-api.eu-central-1.amazonaws.com/test/conf-app-bucket/${urlPath}${extension}`;
       const requestBody = image;
 
       const requestConfig = {
@@ -215,7 +221,8 @@ export default function DataProvider({children}){
         editConference,
         attendConfereceToUsers,
         update,
-        uploadImage
+        uploadImage,
+        toggleUpdate
     }
 
 

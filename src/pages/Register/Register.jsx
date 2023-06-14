@@ -2,6 +2,8 @@ import "./register.css"
 import React, { useContext } from 'react'
 import { useState } from 'react'
 import { LoggedContext } from '../../AuthContext';
+import { useNavigate } from "react-router-dom";
+import { DataContext } from "../../DataContext";
 
 function Register() {
     const [name, setName] = useState('');
@@ -13,10 +15,17 @@ function Register() {
     const [title, setTitle] = useState('');
     const [message, setMessage] = useState(null);
     const registerUser = useContext(LoggedContext).registerUser
+    const {toggleUpdate} = useContext(DataContext);
+    const navigate = useNavigate();
 
     const submitHandler = (event) => {
         event.preventDefault();
         registerUser(username,email,name,password,department,deployment,title, setMessage);
+        setTimeout(()=>{
+            navigate('/');
+            toggleUpdate();
+        },3000)
+        
     }
 
   return (
@@ -48,7 +57,6 @@ function Register() {
         </form>
         <h2 className='title__h2'>{message}</h2>
         </div>
-        <img src="" alt="" />
     </section>
   )
 }

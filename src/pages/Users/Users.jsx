@@ -8,8 +8,8 @@ import { UserDetailsModal } from "../../modals/UserDetailsModal.jsx";
 function Users() {
   const [openUserDetails, setOpenUserDetails] = useState(false);
   const [eventHandle, setEventHandle] = useState('');
-  const userData = useContext(DataContext).users;
-  if(!userData) return <div>Loading...</div>
+  const users = useContext(DataContext).users;
+  if(!users) return <div>Loading...</div>
 
   return (
     <section className="container">
@@ -21,8 +21,8 @@ function Users() {
       <h2>Users</h2>
       <div className="users__container">
         <div className="user__info__container">
-          {userData.map((obj, i) => {
-            return <User key={i} id={i} name={obj.name} title={obj.title} dep={obj.department} del={obj.deployment} attends={obj.attends} setOpenUserDetails={setOpenUserDetails} info={setEventHandle}/>
+          {users.map((obj, i) => {
+            return <User key={i} id={i} name={obj.name} title={obj.title} dep={obj.department} del={obj.deployment} attendedConferences={obj.attendedConferences} setOpenUserDetails={setOpenUserDetails} info={setEventHandle}/>
           })}
         </div>
         <div className="pic__container">
